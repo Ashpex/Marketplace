@@ -1,0 +1,11 @@
+.center {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.align-right {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+}
