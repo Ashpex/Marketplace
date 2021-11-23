@@ -1,5 +1,5 @@
 {
-  "name": "markerplace",
+  "name": "marketplacedemo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,11 +7,26 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peakyblinder244/market-place-demo.git"
+  },
+  "author": "Le Hong Quan",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/peakyblinder244/market-place-demo/issues"
+  },
+  "homepage": "https://github.com/peakyblinder244/market-place-demo#readme",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-handlebars": "^5.3.4",
-    "nodemon": "^2.0.14"
+    "express-handlebars": "^6.0.1",
+    "handlebars-helpers": "^0.10.0",
+    "mongoose": "^6.0.13",
+    "numeral": "^2.0.6"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15"
   }
 }
