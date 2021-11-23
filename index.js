@@ -79,4 +79,6 @@ app.set("views", path.join(__dirname, "views"));
 
 route(app);
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000, () => {
+  console.log("App listening on port 3000");
+});
