@@ -2,6 +2,7 @@ const Product = require("../models/Product");
 const Category = require("../models/Category");
 const utils = require("../utils/mongoose");
 const utilsPagination = require("../utils/pagination");
+const utilsAddUrlProduct = require("../utils/getUrlProduct");
 // const path = require("path");
 // const express = require("express");
 // const app = express();
@@ -16,30 +17,27 @@ class ProductController {
       page = 1;
     }
 
-    Product.find({})
+    let products = await Product.find({})
       .skip(perPage * (page - 1))
-      .limit(perPage)
-      .then(async (products) => {
-        let size = await Product.count({});
+      .limit(perPage);
 
-        let categories = await Category.find({});
-        var leftPage = utilsPagination.getLeftPage("/shop-grid", page);
-        var pagination = utilsPagination.getPagination("/shop-grid", page);
-        var rightPage = utilsPagination.getRightPage("/shop-grid", page);
-        //productProMax = utils.mutipleMongooseToObject(products);
+    let size = await Product.count({});
 
-        res.render("shop-grid/shop-grid", {
-          products: utils.mutipleMongooseToObject(products),
-          size: size,
-          currentPage: page,
-          category: utils.mutipleMongooseToObject(categories),
-          pagination: pagination,
-          leftPage: leftPage,
-          rightPage: rightPage,
-        });
-        //res.json(categories);
-      })
-      .catch(next);
+    let categories = await Category.find({});
+    var leftPage = await utilsPagination.getLeftPage("/shop-grid", page);
+    var pagination = await utilsPagination.getPagination("/shop-grid", page);
+    var rightPage = await utilsPagination.getRightPage("/shop-grid", page);
+    //productProMax = utils.mutipleMongooseToObject(products);
+    let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
+    res.render("shop-grid/shop-grid", {
+      products: listProducts,
+      size: size,
+      currentPage: page,
+      category: utils.mutipleMongooseToObject(categories),
+      pagination: pagination,
+      leftPage: leftPage,
+      rightPage: rightPage,
+    });
   }
 
   async seachByCategory(req, res, next) {
@@ -47,7 +45,7 @@ class ProductController {
     // app.use(express.static(path.join(__dirname, "../public")));
     //res.render("home/home");
 
-    var categoryChoose = await Category.findOne({
+    let categoryChoose = await Category.findOne({
       idCategory: req.params.idCategory,
     });
 
@@ -56,57 +54,49 @@ class ProductController {
       return;
     }
 
-    //res.send(utils.mongooseToObject(categoryChoose));
-    //chua fix
-
     var perPage = 6,
       page = Math.max(parseInt(req.param("page")) || 1, 1);
     if (req.param("page") == null) {
       page = 1;
     }
 
-    Product.find({ _id: { $in: categoryChoose.listIdProduct } })
+    let products = await Product.find({
+      _id: { $in: categoryChoose.listIdProduct },
+    })
       .skip(perPage * (page - 1))
-      .limit(perPage)
-      .then(async (products) => {
-        var size = 0;
-        await Product.count({
-          _id: { $in: categoryChoose.listIdProduct },
-        }).then((numOfProducts) => {
-          size = numOfProducts;
-        });
+      .limit(perPage);
 
-        var categories;
-        await Category.find({}).then((category) => {
-          categories = category;
-        });
+    let size = await Product.count({
+      _id: { $in: categoryChoose.listIdProduct },
+    });
 
-        var leftPage = utilsPagination.getLeftPage(
-          "/shop-grid/" + req.params.idCategory,
-          page
-        );
-        var pagination = utilsPagination.getPagination(
-          "/shop-grid/" + req.params.idCategory,
-          page
-        );
-        var rightPage = utilsPagination.getRightPage(
-          "/shop-grid/" + req.params.idCategory,
-          page
-        );
+    let categories = await Category.find({});
 
-        res.render("shop-grid/shop-grid", {
-          products: utils.mutipleMongooseToObject(products),
-          size: size,
-          currentPage: page,
-          category: utils.mutipleMongooseToObject(categories),
-          idCategory: req.params.idCategory,
-          pagination: pagination,
-          leftPage: leftPage,
-          rightPage: rightPage,
-        });
-        //res.json(categories);
-      })
-      .catch(next);
+    let leftPage = await utilsPagination.getLeftPage(
+      "/shop-grid/" + req.params.idCategory,
+      page
+    );
+    let pagination = await utilsPagination.getPagination(
+      "/shop-grid/" + req.params.idCategory,
+      page
+    );
+    let rightPage = await utilsPagination.getRightPage(
+      "/shop-grid/" + req.params.idCategory,
+      page
+    );
+    let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
+    // res.send(tmp);
+
+    res.render("shop-grid/shop-grid", {
+      products: listProducts,
+      size: size,
+      currentPage: page,
+      category: utils.mutipleMongooseToObject(categories),
+      idCategory: req.params.idCategory,
+      pagination: pagination,
+      leftPage: leftPage,
+      rightPage: rightPage,
+    });
   }
 
   async getProduct(req, res, next) {
