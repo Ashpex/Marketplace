@@ -3,9 +3,10 @@ const router = express.Router();
 
 const productController = require("../controller/ProductController");
 
+router.get("/:idCategory", productController.seachByCategory);
 // productController.index
-router.get("/", productController.index);
+router.get("/:idCategory/:idProduct", productController.getProduct);
 
-router.get("/:slug", productController.searchByCategory);
+router.get("/", productController.index);
 
 module.exports = router;
