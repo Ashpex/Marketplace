@@ -12,6 +12,7 @@ const Product = new Schema(
     category: { type: String, maxlength: 255 },
     idProduct: { type: String, maxlength: 255 },
     listImgExtra: [],
+    producer: { type: String, maxlength: 255 },
   },
   { collection: "product" }
 );

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const Category = new Schema(
   {
     name: { type: String, maxlength: 255 },
-    listIdProduct: [],
+    listIdProduct: [{ type: Schema.Types.ObjectId }],
     idCategory: { type: String, maxlength: 255 },
   },
   { collection: "category" }

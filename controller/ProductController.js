@@ -3,14 +3,10 @@ const Category = require("../models/Category");
 const utils = require("../utils/mongoose");
 const utilsPagination = require("../utils/pagination");
 const utilsAddUrlProduct = require("../utils/getUrlProduct");
-// const path = require("path");
-// const express = require("express");
-// const app = express();
 
 class ProductController {
   //[Get] /
   async index(req, res, next) {
-    //res.render('shop-grid/shop-grid');
     var perPage = 6,
       page = Math.max(parseInt(req.param("page")) || 1, 1);
     if (req.param("page") == null) {
@@ -27,10 +23,10 @@ class ProductController {
     var leftPage = await utilsPagination.getLeftPage("/shop-grid", page);
     var pagination = await utilsPagination.getPagination("/shop-grid", page);
     var rightPage = await utilsPagination.getRightPage("/shop-grid", page);
-    //productProMax = utils.mutipleMongooseToObject(products);
-    let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
+
+    //let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
     res.render("shop-grid/shop-grid", {
-      products: listProducts,
+      products: utils.mutipleMongooseToObject(products),
       size: size,
       currentPage: page,
       category: utils.mutipleMongooseToObject(categories),
@@ -39,12 +35,8 @@ class ProductController {
       rightPage: rightPage,
     });
   }
-
+  //[Get] /:idCategroy
   async seachByCategory(req, res, next) {
-    // console.log(path.join(__dirname, "../public"));
-    // app.use(express.static(path.join(__dirname, "../public")));
-    //res.render("home/home");
-
     let categoryChoose = await Category.findOne({
       idCategory: req.params.idCategory,
     });
@@ -84,11 +76,10 @@ class ProductController {
       "/shop-grid/" + req.params.idCategory,
       page
     );
-    let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
-    // res.send(tmp);
+    //let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
 
     res.render("shop-grid/shop-grid", {
-      products: listProducts,
+      products: utils.mutipleMongooseToObject(products),
       size: size,
       currentPage: page,
       category: utils.mutipleMongooseToObject(categories),
@@ -99,6 +90,7 @@ class ProductController {
     });
   }
 
+  //[Get] /:idCategroy/:idProduct
   async getProduct(req, res, next) {
     let { idCategory } = req.params;
     let { idProduct } = req.params;
@@ -115,9 +107,6 @@ class ProductController {
       res.redirect("/shop-grid");
       return;
     }
-
-    //res.send(arr);
-    //res.send(categoryChoose);
 
     let relatedProduct = await Product.find({
       _id: { $in: categoryChoose.listIdProduct },
