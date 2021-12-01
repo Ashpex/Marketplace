@@ -1,18 +1,20 @@
-{{>hero-home}}
+{{>hero-home category=category}}
 <!-- Categories Section Begin -->
 <section class="categories">
   <div class="container">
     <div class="row">
       <div class="categories__slider owl-carousel">
+        {{#each category}}
         <div class="col-lg-3">
           <div
             class="categories__item set-bg"
             data-setbg="/img/categories/cat-1.jpg"
           >
-            <h5><a href="#">Trái cây</a></h5>
+            <h5><a href="/shop-grid/{{this.idCategory}}">{{this.name}}</a></h5>
           </div>
         </div>
-        <div class="col-lg-3">
+        {{/each}}
+        {{!-- <div class="col-lg-3">
           <div
             class="categories__item set-bg"
             data-setbg="/img/categories/cat-2.jpg"
@@ -43,7 +45,7 @@
           >
             <h5><a href="#">Thịt</a></h5>
           </div>
-        </div>
+        </div> --}}
       </div>
     </div>
   </div>

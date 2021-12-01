@@ -7,7 +7,10 @@ const productController = require("./ProductController");
 class HomeController {
   //[Get] /
   async index(req, res, next) {
-    res.render("home/home");
+    const categories = await Category.find({});
+    res.render("home/home", {
+      category: utils.mutipleMongooseToObject(categories),
+    });
   }
 }
 

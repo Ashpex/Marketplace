@@ -8,7 +8,12 @@
             <span>Danh mục</span>
           </div>
           <ul>
-            <li><a href="#">Thịt cá, hải sản</a></li>
+            {{#each category}}
+              <li><a
+                  href="/shop-grid/{{this.idCategory}}"
+                >{{this.name}}</a></li>
+            {{/each}}
+            {{! <li><a href="#">Thịt cá, hải sản</a></li>
             <li><a href="#">Rau củ, trái cây</a></li>
             <li><a href="#">Đồ uống các loại</a></li>
             <li><a href="#">Sữa uống các loại</a></li>
@@ -18,7 +23,7 @@
             <li><a href="#">Gạo, bột, đồ khô</a></li>
             <li><a href="#">Đồ mát, đông lạnh</a></li>
             <li><a href="#">Chăm sóc cá nhân</a></li>
-            <li><a href="#">Đồ dùng gia đình</a></li>
+            <li><a href="#">Đồ dùng gia đình</a></li> }}
           </ul>
         </div>
       </div>

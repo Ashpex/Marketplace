@@ -114,10 +114,12 @@ class ProductController {
       .skip(0)
       .limit(6);
 
+    const categories = await Category.find({});
     await res.render("shop-details/shop-details", {
       product: utils.mutipleMongooseToObject(new Array(productChoose)),
       category: utils.mutipleMongooseToObject(new Array(categoryChoose)),
       relatedProduct: utils.mutipleMongooseToObject(relatedProduct),
+      listCategory: utils.mutipleMongooseToObject(categories),
     });
   }
 }
