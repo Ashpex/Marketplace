@@ -199,4 +199,55 @@ module.exports = {
         res.render("errors/404");
       });
   },
+  getChangePassword(req, res, next) {
+    if (req.user == null) {
+      res.redirect("/login");
+      return;
+    }
+    res.render("my-account/change-password", { layout: false });
+  },
+
+  async postChangePassword(req, res, next) {
+    if (req.user == null) {
+      res.redirect("/login");
+      return;
+    }
+
+    const password = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+    const reNewPassword = req.body.re_password;
+
+    if (!password || !newPassword || !reNewPassword) {
+      res.render("my-account/change-password", {
+        layout: false,
+        error: "Ô dữ liệu không được để trống!!",
+      });
+      return;
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!bcrypt.compareSync(password, user.password)) {
+      res.render("my-account/change-password", {
+        layout: false,
+        error: "Mật khẩu không đúng!!",
+      });
+      return;
+    }
+    if (reNewPassword !== newPassword) {
+      res.render("my-account/change-password", {
+        layout: false,
+        error: "Nhập lại mật khẩu sai !!",
+      });
+      return;
+    }
+    const hash = bcrypt.hashSync(req.body.newPassword, 10);
+    User.findByIdAndUpdate(req.user.id, { password: hash })
+      .then(() => {
+        res.redirect("/home");
+      })
+      .catch((err) => {
+        console.log(err);
+        res.render("errors/404");
+      });
+  },
 };

@@ -27,4 +27,8 @@ router.get("/myaccount/edit", UserController.getMyAccountEdit);
 
 router.post("/myaccount/edit", UserController.postMyAccountEdit);
 
+router.get("/myaccount/changePassword", UserController.getChangePassword);
+
+router.post("/myaccount/changePassword", UserController.postChangePassword);
+
 module.exports = router;
