@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
     <link rel="stylesheet" href="/css/main.css" type="text/css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 </head>
 <body>
      <!-- Page Preloder -->
@@ -30,54 +31,63 @@
         <div class="humberger__menu__logo">
             <a href="#"><img src="img/logo.png" alt=""></a>
         </div>
-        <div class="humberger__menu__cart">
-            <ul>
-                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-            </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
-        </div>
-        <div class="humberger__menu__widget">
-            <div class="header__top__right__language">
-                <img src="img/language.png" alt="">
-                <div>English</div>
-                <span class="arrow_carrot-down"></span>
-                <ul>
-                    <li><a href="#">Spanis</a></li>
-                    <li><a href="#">English</a></li>
-                </ul>
-            </div>
+        
+        <div class="humberger__menu__widget">            
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                {{!-- <a href="#"><i class="fa fa-user"></i> Login</a> --}}
+                {{#if user}}
+                <a href="#" style="cursor: auto;">    
+                  <i class="fas fa-user-check" style="margin-left: 10px;"></i>            
+                  Hello
+                  {{user.name}}
+                </a>
+                <a href="/myaccount">
+                  <i class="fa fa-user" style="margin-left: 10px;"></i>
+                  Tài Khoản</a>
+                <a href="/logout">
+                  <i class="fas fa-sign-out-alt" style="margin-left: 10px;"></i>
+                  Đăng Xuất</a>
+              {{else}}
+                <a href="/login">
+                  <i class="fas fa-sign-in-alt" style="margin-left: 10px;"></i>
+                  Đăng nhập</a>
+                <a href="/register"><i
+                    class="fa fa-user-plus"
+                    style="margin-left: 10px;"
+                  ></i>
+                  Đăng ký</a>
+              {{/if}}
             </div>
+            
         </div>
+        
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="/">Home</a></li>
-                <li><a href="/shop-grid">Shop</a></li>
-                <li><a href="#">Pages</a>
-                    <ul class="header__menu__dropdown">
-                        <li><a href="/shop-details">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                        <li><a href="./checkout.html">Check Out</a></li>
-                        <li><a href="./blog-details.html">Blog Details</a></li>
+                <li class="active"><a href="/">Trang chủ</a></li>
+                <li><a href="/shop-grid">Mua sắm</a></li>
+                <li><a href="#">Trang</a>
+                    <ul class="header__menu__dropdown" style="font-size: 12px;">
+                        <li ><a href="/shop-details">Chi tiết sản phẩm</a></li>
+                        <li><a href="/shoping-cart">Giỏ hàng</a></li>
+                        <li><a href="/checkout">Thanh toán</a></li>
+                        <li><a href="/blog-details">Bài viết chi tiết</a></li>
                     </ul>
                 </li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="/blog">Bài viết</a></li>
+                <li><a href="/contact">Liên hệ</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
         <div class="header__top__right__social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-pinterest-p"></i></a>
         </div>
         <div class="humberger__menu__contact">
             <ul>
                 <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li>Free Shipping for all Order of $99</li>
+                <li style="font-size: 12px;">Giao hàng miễn phí cho các đơn hàng trên 100K</li>
             </ul>
         </div>
     </div>

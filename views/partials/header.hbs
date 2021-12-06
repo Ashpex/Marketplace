@@ -1,83 +1,86 @@
 <!-- Header Section Begin -->
-    <header class="header">
-      <div class="header__top">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-6 col-md-6">
-              <div class="header__top__left">
-                <ul>
-                  <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                  <li>Giao hàng miễn phí cho các đơn hàng trên 100K</li>
-                </ul>
-              </div>
+<header class="header">
+  <div class="header__top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <div class="header__top__left">
+            <ul>
+              <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+              <li>Giao hàng miễn phí cho các đơn hàng trên 100K</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="header__top__right align-right">
+            <div class="header__top__right__social">
+              <a href="#"><i class="fa fa-facebook"></i></a>
+              <a href="#"><i class="fa fa-twitter"></i></a>
+              <a href="#"><i class="fa fa-linkedin"></i></a>
+              <a href="#"><i class="fa fa-pinterest-p"></i></a>
             </div>
-            <div class="col-lg-6 col-md-6">
-              <div class="header__top__right align-right">
-                <div class="header__top__right__social">
-                  <a href="#"><i class="fa fa-facebook"></i></a>
-                  <a href="#"><i class="fa fa-twitter"></i></a>
-                  <a href="#"><i class="fa fa-linkedin"></i></a>
-                  <a href="#"><i class="fa fa-pinterest-p"></i></a>
+            <div class="header__top__right__auth align-right">
+              {{#if user}}
+                <div style="font-size: 14px;">    
+                  <i class="fas fa-user-check"></i>            
+                  Hello
+                  {{user.name}}
                 </div>
-                {{!-- <div class="header__top__right__language">
-                  <img src="img/language.png" alt="" />
-                  <div>English</div>
-                  <span class="arrow_carrot-down"></span>
-                  <ul>
-                    <li><a href="#">Spanis</a></li>
-                    <li><a href="#">English</a></li>
-                  </ul>
-                </div> --}}
-                <div class="header__top__right__auth align-right">
-                  <a href="#"><i class="fa fa-user" style="margin-left: 10px;"></i> Đăng nhập</a>
-                  <a href="#"><i class="fa fa-user-plus" style="margin-left: 10px;"></i> Đăng ký</a>
-                </div>
-              </div>
+                <a href="/myaccount">
+                  <i class="fa fa-user" style="margin-left: 10px;"></i>
+                  Tài Khoản</a>
+                <a href="/logout">
+                  <i class="fas fa-sign-out-alt" style="margin-left: 10px;"></i>
+                  Đăng Xuất</a>
+              {{else}}
+                <a href="/login">
+                  <i class="fas fa-sign-in-alt" style="margin-left: 10px;"></i>
+                  Đăng nhập</a>
+                <a href="/register"><i
+                    class="fa fa-user-plus"
+                    style="margin-left: 10px;"
+                  ></i>
+                  Đăng ký</a>
+              {{/if}}
+
             </div>
           </div>
         </div>
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-3 col-md-3">
-            <div class="header__logo">
-              <a href="/"><img src="img/logo.png" alt="" /></a>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6">
-            <nav class="header__menu">
-              <ul>
-                <li class="active"><a href="/">Trang chủ</a></li>
-                <li><a href="/shop-grid">Mua sắm</a></li>
-                <li><a href="#">Trang</a>
-                  <ul class="header__menu__dropdown">
-                    <li><a href="/shop-details">Chi tiết sản phẩm</a></li>
-                    <li><a href="/shoping-cart">Giỏ hàng</a></li>
-                    <li><a href="/checkout">Thanh toán</a></li>
-                    <li><a href="/blog-details">Bài viết chi tiết</a></li>
-                  </ul>
-                </li>
-                <li><a href="/blog">Bài viết</a></li>
-                <li><a href="/contact">Liên hệ</a></li>
-              </ul>
-            </nav>
-          </div>
-          <div class="col-lg-3 col-md-3">
-            {{!-- <div class="header__cart">
-              <ul>
-                <li><a href="#"><i class="fa fa-heart"></i>
-                    <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i>
-                    <span>3</span></a></li>
-              </ul>
-              <div class="header__cart__price">item: <span>$150.00</span></div>
-            </div> --}}
-              
-          </div>
-        </div>
-        <div class="humberger__open" >
-          <i class="fa fa-bars"></i>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-3">
+        <div class="header__logo">
+          <a href="/"><img src="/img/logo.png" alt="" /></a>
         </div>
       </div>
-    </header>
-    <!-- Header Section End -->
+      <div class="col-lg-6 col-md-6">
+        <nav class="header__menu">
+          <ul>
+            <li class="active"><a href="/">Trang chủ</a></li>
+            <li><a href="/shop-grid">Mua sắm</a></li>
+            <li><a href="#">Trang</a>
+              <ul class="header__menu__dropdown">
+                <li><a href="/shop-details">Chi tiết sản phẩm</a></li>
+                <li><a href="/shoping-cart">Giỏ hàng</a></li>
+                <li><a href="/checkout">Thanh toán</a></li>
+                <li><a href="/blog-details">Bài viết chi tiết</a></li>
+              </ul>
+            </li>
+            <li><a href="/blog">Bài viết</a></li>
+            <li><a href="/contact">Liên hệ</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-3 col-md-3">    
+
+      </div>
+    </div>
+    <div class="humberger__open">
+      <i class="fa fa-bars"></i>
+    </div>
+  </div>
+</header>
+<!-- Header Section End -->

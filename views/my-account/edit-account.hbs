@@ -1,0 +1,116 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Chỉnh Sửa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css" />
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="/css/style_register.css" />
+
+</head>
+
+<body>
+    {{!-- header --}}
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__right align-right">
+
+                        <div class="header__top__right__auth align-right">
+                            {{#if user}}
+                            <div style="font-size: 14px;">
+                                <i class="fas fa-user-check"></i>
+                                Hello
+                                {{user.name}}
+                            </div>
+                            <a href="/">
+                                <i class="fa fa-home" style="margin-left: 10px;"></i>
+                                Trang Chủ</a>
+
+
+                            {{/if}}
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <br>
+                    <div style="margin-left: 100px;">
+                        <a href="/myaccount">
+                            <i class="fa fa-user" style="margin-left: 20px;"></i>
+                            Tài Khoản</a>
+                        <a href="/logout">
+                            <i class="fas fa-sign-out-alt" style="margin-left: 10px;"></i>
+                            Đăng Xuất</a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{!-- header --}}
+    <div class="main">
+        <section class="signup">
+
+            <div class="container">
+                <div class="signup-content" style="border-radius: 15px;">
+                    <form method="POST" id="edit-form" class="edit-form">
+                        <h2 class="form-title">Chỉnh Sửa</h2>
+                        {{#if error}}
+                        {{!-- alert error --}}
+                        <div class="alert alert-danger">
+                            {{error}}
+                        </div>
+                        {{/if}}
+
+
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="name" id="name" placeholder="Họ Và Tên"
+                                value="{{user.name}}" required />
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-input" name="email" id="email" placeholder="Email"
+                                value="{{user.email}}" required />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="address" id="address" placeholder="Địa Chỉ"
+                                value="{{user.address}}" required />
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <input style="cursor: pointer;" type="submit" name="submit" id="submit" class="form-submit"
+                                value="Chỉnh Sửa" />
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JS -->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/js/main_register.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+</body>
+
+</html>

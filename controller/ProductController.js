@@ -7,7 +7,7 @@ const utilsAddUrlProduct = require("../utils/getUrlProduct");
 class ProductController {
   //[Get] /
   async index(req, res, next) {
-    var perPage = 6,
+    let perPage = 6,
       page = Math.max(parseInt(req.param("page")) || 1, 1);
     if (req.param("page") == null) {
       page = 1;
@@ -18,11 +18,24 @@ class ProductController {
       .limit(perPage);
 
     let size = await Product.count({});
+    let sizePage = Math.max(parseInt(size / perPage + 1));
 
     let categories = await Category.find({});
-    var leftPage = await utilsPagination.getLeftPage("/shop-grid", page);
-    var pagination = await utilsPagination.getPagination("/shop-grid", page);
-    var rightPage = await utilsPagination.getRightPage("/shop-grid", page);
+    var leftPage = await utilsPagination.getLeftPage(
+      "/shop-grid",
+      page,
+      sizePage
+    );
+    var pagination = await utilsPagination.getPagination(
+      "/shop-grid",
+      page,
+      sizePage
+    );
+    var rightPage = await utilsPagination.getRightPage(
+      "/shop-grid",
+      page,
+      sizePage
+    );
 
     //let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
     res.render("shop-grid/shop-grid", {

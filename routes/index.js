@@ -1,6 +1,6 @@
 const productRouter = require("./product");
-
 const homeRouter = require("./home");
+const userRouter = require("./user");
 
 function route(app) {
   //   app.get("/", function (req, res) {
@@ -11,9 +11,11 @@ function route(app) {
   //     res.render('shop-grid/shop-grid');
   // });
 
-  app.use("/", homeRouter);
+  app.use("/home", homeRouter);
 
   app.use("/shop-grid", productRouter);
+
+  app.use("/", userRouter);
 
   app.get("/shop-details", function (req, res) {
     res.render("shop-details/shop-details");
@@ -37,6 +39,10 @@ function route(app) {
 
   app.get("/checkout", function (req, res) {
     res.render("checkout/checkout");
+  });
+
+  app.get("/", function (req, res) {
+    res.redirect("/home");
   });
 }
 

@@ -1674,6 +1674,12 @@ ol {
   color: #ffffff;
 }
 
+.product__pagination a.active {
+  background: #7fad39;
+  border-color: #7fad39;
+  color: #ffffff;
+}
+
 .product__pagination a:last-child,
 .blog__pagination a:last-child {
   margin-right: 0;
@@ -3431,7 +3437,7 @@ ol {
   }
   .humberger__menu__wrapper .slicknav_nav a {
     color: #1c1c1c;
-    font-size: 16px;
+    /* font-size: 16px; */
     font-weight: 600;
     margin: 0;
     border-bottom: 1px solid #e1e1e1;
