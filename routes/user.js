@@ -31,4 +31,8 @@ router.get("/myaccount/changePassword", UserController.getChangePassword);
 
 router.post("/myaccount/changePassword", UserController.postChangePassword);
 
+router.get("/", function (req, res) {
+  res.redirect("/home");
+});
+
 module.exports = router;

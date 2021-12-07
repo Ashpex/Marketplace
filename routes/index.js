@@ -40,10 +40,6 @@ function route(app) {
   app.get("/checkout", function (req, res) {
     res.render("checkout/checkout");
   });
-
-  app.get("/", function (req, res) {
-    res.redirect("/home");
-  });
 }
 
 module.exports = route;
