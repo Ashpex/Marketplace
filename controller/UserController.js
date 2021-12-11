@@ -2,94 +2,8 @@ const passport = require("../middlewares/partport");
 const utils = require("../utils/mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const SendmailController = require("../controller/SendmailController");
 
-// class UserController {
-//   //Get
-//   getLogin(req, res, next) {
-//     if (req.user) {
-//       res.redirect("/home");
-//       return;
-//     }
-//     res.render("login/login", {
-//       layout: false,
-//       wrongLogin: req.query.wrongLogin,
-//     });
-//   }
-//   //Post
-//   // postLogin(req, res, next) {
-//   //   //console.log("hi");
-//   //   passport.authenticate("local", {
-//   //     successRedirect: "/",
-//   //     failureRedirect: "/login?wrongLogin=1",
-//   //   });
-//   // }
-
-//   getLogout(req, res, next) {
-//     req.logout();
-//     res.redirect("/home");
-//   }
-
-//   getRegister(req, res, next) {
-//     if (req.user) {
-//       res.redirect("/home");
-//       return;
-//     }
-//     res.render("register/register", {
-//       layout: false,
-//       // wrongRegister: req.query.wrongRegister,
-//       // wrongPassword: req.query.wrongPassword,
-//       // wrongEmail: req.query.wrongEmail,
-//       // wrongName: req.query.wrongName,
-//       // wrongAddress: req.query.wrongAddress,
-//     });
-//   }
-
-//   async postRegister(req, res, next) {
-//     if (req.body.password !== req.body.re_password) {
-//       // res.redirect("/register?wrongRegister");
-//       return res.render("register/register", {
-//         layout: false,
-//         error: "Mật khẩu không khớp",
-//       });
-//     }
-//     // console.log(req.body.password);
-//     // if (!req.body.password || !req.body.re_password) {
-//     //   // res.redirect("/register?wrongPassword");
-//     //   return res.render("register/register", {
-//     //     layout: false,
-//     //     error: "Mật khẩu không được để trống",
-//     //   });
-//     // }
-//     // if (!req.body.name) {
-//     //   res.redirect("/register?wrongName");
-//     //   return;
-//     // }
-//     // if (!req.body.address) {
-//     //   res.redirect("/register?wrongAddress");
-//     //   return;
-//     // }
-//     const user = await User.findOne({ email: req.body.email }).lean();
-//     if (user) {
-//       return res.render("register/register", {
-//         layout: false,
-//         error: "Email đã tồn tại",
-//       });
-//     }
-//     const hash = bcrypt.hashSync(req.body.password, 10);
-//     const newUser = new User({
-//       email: req.body.email,
-//       password: hash,
-//       name: req.body.name,
-//       address: req.body.address,
-//       status: true,
-//     });
-//     newUser.save((err) => {
-//       if (err) return next(err);
-//       res.redirect("/login");
-//     });
-//   }
-// }
-// module.exports = new UserController();
 module.exports = {
   getLogin: (req, res, next) => {
     if (req.user) {
@@ -126,6 +40,7 @@ module.exports = {
         error: "Email đã tồn tại",
       });
     }
+
     const hash = bcrypt.hashSync(req.body.password, 10);
     const newUser = new User({
       email: req.body.email,
@@ -136,11 +51,25 @@ module.exports = {
     });
     newUser.save((err) => {
       if (err) return next(err);
-      res.redirect("/login");
+      // send mail
+      const result = SendmailController.sendMail(
+        req.body.email,
+        "ĐĂNG KÝ TÀI KHOẢN THÀNH CÔNG!",
+        "Chúc mừng bạn đã đăng ký thành công trên MarketPlace!" +
+          "<br>" +
+          `Email: ${req.body.email}` +
+          "<br>" +
+          `Mật khẩu: ${req.body.password}`
+      );
+      res.render("login/login", {
+        layout: false,
+        message:
+          "Đăng ký tài khoản thành công, check mail để xem thông tin tài khoản",
+      });
     });
   },
 
-  async getMyAccount(req, res, next) {
+  getMyAccount: async (req, res, next) => {
     if (req.user == null) {
       res.redirect("/login");
       return;
@@ -152,7 +81,7 @@ module.exports = {
       user: utils.mongooseToObject(user),
     });
   },
-  async getMyAccountEdit(req, res, next) {
+  getMyAccountEdit: async (req, res, next) => {
     if (req.user == null) {
       res.redirect("/login");
       return;
@@ -163,7 +92,7 @@ module.exports = {
     });
   },
 
-  async postMyAccountEdit(req, res, next) {
+  postMyAccountEdit: async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email }).lean();
     if (user && user.email !== req.user.email) {
       return res.render("my-account/edit-account", {
@@ -171,18 +100,7 @@ module.exports = {
         error: "Email đã tồn tại",
       });
     }
-    if (!req.body.name) {
-      return res.render("my-account/edit-account", {
-        layout: false,
-        error: "Tên không được để trống",
-      });
-    }
-    if (!req.body.address) {
-      return res.render("my-account/edit-account", {
-        layout: false,
-        error: "Địa chỉ không được để trống",
-      });
-    }
+
     await User.findByIdAndUpdate(req.user.id, {
       name: req.body.name,
       email: req.body.email,
@@ -199,7 +117,7 @@ module.exports = {
         res.render("errors/404");
       });
   },
-  getChangePassword(req, res, next) {
+  getChangePassword: (req, res, next) => {
     if (req.user == null) {
       res.redirect("/login");
       return;
@@ -207,7 +125,7 @@ module.exports = {
     res.render("my-account/change-password", { layout: false });
   },
 
-  async postChangePassword(req, res, next) {
+  postChangePassword: async (req, res, next) => {
     if (req.user == null) {
       res.redirect("/login");
       return;
@@ -216,14 +134,6 @@ module.exports = {
     const password = req.body.oldPassword;
     const newPassword = req.body.newPassword;
     const reNewPassword = req.body.re_password;
-
-    if (!password || !newPassword || !reNewPassword) {
-      res.render("my-account/change-password", {
-        layout: false,
-        error: "Ô dữ liệu không được để trống!!",
-      });
-      return;
-    }
 
     const user = await User.findById(req.user.id);
     if (!bcrypt.compareSync(password, user.password)) {
@@ -248,6 +158,65 @@ module.exports = {
       .catch((err) => {
         console.log(err);
         res.render("errors/404");
+      });
+  },
+
+  getForgotPassword: (req, res, next) => {
+    res.render("forgot-password/forgot-password", { layout: false });
+  },
+  postForgotPassword: async (req, res, next) => {
+    const user = await User.findOne({ email: req.body.email }).lean();
+    if (!user) {
+      return res.render("forgot-password/forgot-password", {
+        layout: false,
+        error: "Email không tồn tại",
+      });
+    }
+
+    const result = SendmailController.sendMail(
+      req.body.email,
+      "Lấy lại mật khẩu",
+      `Click vào link sau để đặt lại mật khẩu: http://localhost:3000/reset-password/${user._id}`
+    );
+
+    res.render("forgot-password/forgot-password", {
+      layout: false,
+      message: "Vui lòng check mail để đặt lại mật khẩu",
+    });
+  },
+  getResetPassword: async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      res.render("errors/404");
+      return;
+    }
+    res.render("forgot-password/reset-password", {
+      layout: false,
+      id: req.params.id,
+    });
+  },
+  postResetPassword: async (req, res, next) => {
+    const user = await User.findById(req.body.id);
+    if (!user) {
+      return res.render("errors/404");
+    }
+
+    if (req.body.password !== req.body.confirm_password) {
+      return res.render("forgot-password/reset-password", {
+        layout: false,
+        id: req.body.id,
+        error: "Mật khẩu không khớp!",
+      });
+    }
+
+    const hash = bcrypt.hashSync(req.body.password, 10);
+    User.findByIdAndUpdate(req.body.id, { password: hash })
+      .then(() => {
+        return res.redirect("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+        res.render("errors/404", { layout: false });
       });
   },
 };

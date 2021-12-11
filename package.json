@@ -18,6 +18,7 @@
     "express-session": "^1.17.2",
     "handlebars-helpers": "^0.10.0",
     "mongoose": "^6.0.13",
+    "nodemailer": "^6.7.2",
     "nodemon": "^2.0.14",
     "numeral": "^2.0.6",
     "passport": "^0.5.0",

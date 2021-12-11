@@ -15,6 +15,14 @@ router.post(
   })
 );
 
+router.get("/forgot-password", UserController.getForgotPassword);
+
+router.post("/forgot-password", UserController.postForgotPassword);
+
+router.get("/reset-password/:id", UserController.getResetPassword);
+
+router.post("/reset-password", UserController.postResetPassword);
+
 router.get("/logout", UserController.getLogout);
 
 router.get("/register", UserController.getRegister);
