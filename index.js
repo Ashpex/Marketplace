@@ -8,6 +8,8 @@ const session = require("express-session"),
 const passport = require("./middlewares/partport");
 const route = require("./routes");
 const db = require("./utils/db");
+const sessionHandler = require("./middlewares/sessionHandler");
+const logger = require("./middlewares/logger")
 db.connectMongoose();
 
 const app = express();
@@ -78,7 +80,13 @@ app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(session({ secret: "cats" }));
+app.use(session({
+  cookie: {
+    maxAge: 1000*60*60*24*365
+  },
+  
+  secret: "cats" 
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function (req, res, next) {
@@ -86,6 +94,9 @@ app.use(function (req, res, next) {
   // res.locals.authenticated = !req.user.anonymous;
   next();
 });
+
+app.use(sessionHandler);
+app.use(logger);
 
 route(app);
 
