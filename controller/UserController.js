@@ -185,22 +185,6 @@ module.exports = {
     });
   },
   getResetPassword: async (req, res, next) => {
-<<<<<<< HEAD
-    try {
-      const user = await User.findById(req.params.id);
-      if (!user) {
-        res.render("errors/404");
-        return;
-      }
-      res.render("forgot-password/reset-password", {
-        layout: false,
-        id: req.params.id,
-      });
-    } catch (err) {
-      console.log(err.message);
-      res.render("errors/404", { layout: false });
-    }
-=======
     const user = await User.findById(req.params.id);
     if (!user) {
       res.render("errors/404");
@@ -210,7 +194,6 @@ module.exports = {
       layout: false,
       id: req.params.id,
     });
->>>>>>> c94a76b32beb94bc4b270d1a27105dfd13c14c69
   },
   postResetPassword: async (req, res, next) => {
     const user = await User.findById(req.body.id);

@@ -12,6 +12,8 @@ db.connectMongoose();
 
 const app = express();
 
+
+
 const hbs = exphbs.create({
   extname: "hbs",
   defaultLayout: "main",
@@ -86,7 +88,8 @@ app.use(function (req, res, next) {
   // res.locals.authenticated = !req.user.anonymous;
   next();
 });
-
+//app.use(sessionHandler);
+//app.use(logger);
 route(app);
 
 app.use((req, res) => {
