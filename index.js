@@ -2,14 +2,12 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
 const numeral = require("numeral");
-const session = require("express-session"),
-  bodyParser = require("body-parser");
+const session = require("express-session");
+const bodyParser = require("body-parser");
 
 const passport = require("./middlewares/partport");
 const route = require("./routes");
 const db = require("./utils/db");
-const sessionHandler = require("./middlewares/sessionHandler");
-const logger = require("./middlewares/logger")
 db.connectMongoose();
 
 const app = express();
@@ -80,13 +78,7 @@ app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(session({
-  cookie: {
-    maxAge: 1000*60*60*24*365
-  },
-  
-  secret: "cats" 
-}));
+app.use(session({ secret: "cats" }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function (req, res, next) {
@@ -94,9 +86,6 @@ app.use(function (req, res, next) {
   // res.locals.authenticated = !req.user.anonymous;
   next();
 });
-
-app.use(sessionHandler);
-app.use(logger);
 
 route(app);
 
@@ -108,10 +97,6 @@ app.use((err, req, res, next) => {
   console.log(err.message);
   res.status(500).render("errors/500", { layout: false, error: err.message });
 });
-
-// app.listen(process.env.PORT || 3000, () => {
-//   console.log("App listening on port 3000");
-// });
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`App listening on port ${process.env.PORT || 5000}`);

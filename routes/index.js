@@ -3,14 +3,6 @@ const homeRouter = require("./home");
 const userRouter = require("./user");
 
 function route(app) {
-  //   app.get("/", function (req, res) {
-  //     res.render("home/home");
-  //   });
-
-  // app.get('/shop-grid',function(req,res){
-  //     res.render('shop-grid/shop-grid');
-  // });
-
   app.use("/home", homeRouter);
 
   app.use("/shop-grid", productRouter);

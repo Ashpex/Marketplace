@@ -26,18 +26,6 @@
                     <div class="sidebar__item">
                         <h4>Phân loại</h4>
                         <ul>
-                            {{!-- <li><a href="#">Thịt cá, hải sản</a></li>
-                            <li><a href="#">Rau củ, trái cây</a></li>
-                            <li><a href="#">Đồ uống các loại</a></li>
-                            <li><a href="#">Sữa uống các loại</a></li>
-                            <li><a href="#">Bánh kẹo các loại</a></li>
-                            <li><a href="#">Mì, cháo, phở, bún</a></li>
-                            <li><a href="#">Dầu ăn, gia vị</a></li>
-                            <li><a href="#">Gạo, bột, đồ khô</a></li>
-                            <li><a href="#">Đồ mát, đông lạnh</a></li>
-                            <li><a href="#">Chăm sóc cá nhân</a></li>
-                            <li><a href="#">Đồ dùng gia đình</a></li> --}}
-
                             {{#each category}}
                             <li><a href="/shop-grid/{{this.idCategory}}">{{this.name}}</a></li>
                             {{/each}}
@@ -45,115 +33,61 @@
                     </div>
                     <div class="sidebar__item">
                         <h4>Giá</h4>
-                        <div class="price-range-wrap">
-                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="10" data-max="540">
-                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
-                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                            </div>
-                            <div class="range-slider">
-                                <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
+                        
+                        <form action="/shop-grid/search" method="GET">
+                            <div class="price-range-wrap">
+                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                    data-min="0" data-max="500000">
+                                    
+                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                    
+                                    
+                                </div>
+                                <div class="range-slider">
+                                    <div class="price-input">
+                                        <input type="hidden" name="name" value="{{name}}">
+                                        <input type="text" id="minamount" name="minPrice">
+                                        <input type="text" id="maxamount" name="maxPrice">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="mt-2">
+                                <button type="submit" class="btn btn-primary btn-block">Áp dụng</button>
+                            </div>
+                        </form>
                     </div>
-                    <!-- <div class="sidebar__item sidebar__item__color--option">
-                            <h4>Màu sắc</h4>
-                            <div class="sidebar__item__color sidebar__item__color--white">
-                                <label for="white">
-                                    White
-                                    <input type="radio" id="white">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--gray">
-                                <label for="gray">
-                                    Gray
-                                    <input type="radio" id="gray">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--red">
-                                <label for="red">
-                                    Red
-                                    <input type="radio" id="red">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--black">
-                                <label for="black">
-                                    Black
-                                    <input type="radio" id="black">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--blue">
-                                <label for="blue">
-                                    Blue
-                                    <input type="radio" id="blue">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--green">
-                                <label for="green">
-                                    Green
-                                    <input type="radio" id="green">
-                                </label>
-                            </div>
-                        </div> -->
-                    <div class="sidebar__item">
-                        <h4>Kích thước</h4>
-                        <div class="sidebar__item__size">
-                            <label for="large">
-                                Lớn
-                                <input type="radio" id="large">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__size">
-                            <label for="medium">
-                                Trung bình
-                                <input type="radio" id="medium">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__size">
-                            <label for="small">
-                                Nhỏ
-                                <input type="radio" id="small">
-                            </label>
-                        </div>
-                        <div class="sidebar__item__size">
-                            <label for="tiny">
-                                Rất nhỏ
-                                <input type="radio" id="tiny">
-                            </label>
-                        </div>
-                    </div>
+                   
+                
                     <div class="sidebar__item">
                         <div class="latest-product__text">
                             <h4>Mới nhất</h4>
                             <div class="latest-product__slider owl-carousel">
                                 <div class="latest-prdouct__slider__item">
 
-                                    {{#each products }}
+                                    {{#each latestProducts }}
                                     <a href="/shop-grid/{{this.url}}" class="latest-product__item">
                                         <div class="latest-product__item__pic">
                                             <img style="width: 110px;" src="{{this.image}}" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>{{this.name}}</h6>
-                                            <span>{{format this.price}}đ</span>
+                                            <span>{{format this.price}}</span>
                                         </div>
                                     </a>
                                     {{/each}}
 
                                 </div>
                                 <div class="latest-prdouct__slider__item">
-                                    {{#each products }}
+                                    {{#each latestProducts }}
                                     <a href="/shop-grid/{{this.url}}" class="latest-product__item">
                                         <div class="latest-product__item__pic">
                                             <img style="width: 110px;" src="{{this.image}}" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>{{this.name}}</h6>
-                                            <span>{{format this.price}}đ</span>
+                                            <span>{{format this.price}}</span>
                                         </div>
                                     </a>
                                     {{/each}}
@@ -185,8 +119,8 @@
                                     <div class="product__discount__item__text">
                                         <span>{{this.category}}</span>
                                         <h5><a href="/shop-grid/{{this.url}}">{{this.name}}</a></h5>
-                                        <div class="product__item__price">{{format this.price}}đ <span>{{format
-                                                this.price}}đ</span></div>
+                                        <div class="product__item__price">{{format this.price}} <span>{{format
+                                                this.price}}</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -209,13 +143,7 @@
                                 <div class="filter__found">
                                     <h6><span>{{size}}</span> sản phẩm được tìm thấy</h6>
                                 </div>
-                            </div>
-                            <div class="col-lg-4 col-md-3">
-                                <div class="filter__option">
-                                    <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
-                                </div>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
                     <div class="row">
@@ -232,7 +160,7 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6><a href="/shop-grid/{{this.url}}">{{this.name}}</a></h6>
-                                    <h5>{{format this.price}}đ</h5>
+                                    <h5>{{format this.price}}</h5>
                                 </div>
                             </div>
                         </div>

@@ -4,9 +4,9 @@ const utils = require("../utils/mongoose");
 const utilsPagination = require("../utils/pagination");
 const utilsAddUrlProduct = require("../utils/getUrlProduct");
 
-class ProductController {
+module.exports = {
   //[Get] /
-  async index(req, res, next) {
+  index: async (req, res, next) => {
     let perPage = 6,
       page = Math.max(parseInt(req.param("page")) || 1, 1);
     if (req.param("page") == null) {
@@ -37,7 +37,9 @@ class ProductController {
       sizePage
     );
 
-    //let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
+    let latestProducts = await Product.find({});
+    latestProducts = latestProducts.slice(0, 3);
+
     res.render("shop-grid/shop-grid", {
       products: utils.mutipleMongooseToObject(products),
       size: size,
@@ -46,10 +48,11 @@ class ProductController {
       pagination: pagination,
       leftPage: leftPage,
       rightPage: rightPage,
+      latestProducts: utils.mutipleMongooseToObject(latestProducts),
     });
-  }
+  },
   //[Get] /:idCategroy
-  async seachByCategory(req, res, next) {
+  seachByCategory: async (req, res, next) => {
     let categoryChoose = await Category.findOne({
       idCategory: req.params.idCategory,
     });
@@ -89,7 +92,11 @@ class ProductController {
       "/shop-grid/" + req.params.idCategory,
       page
     );
-    //let listProducts = await utilsAddUrlProduct.AddUrlProduct(products);
+
+    let latestProducts = await Product.find({
+      _id: { $in: categoryChoose.listIdProduct },
+    });
+    latestProducts = latestProducts.slice(0, 3);
 
     res.render("shop-grid/shop-grid", {
       products: utils.mutipleMongooseToObject(products),
@@ -100,11 +107,12 @@ class ProductController {
       pagination: pagination,
       leftPage: leftPage,
       rightPage: rightPage,
+      latestProducts: utils.mutipleMongooseToObject(latestProducts),
     });
-  }
+  },
 
   //[Get] /:idCategroy/:idProduct
-  async getProduct(req, res, next) {
+  getProduct: async (req, res, next) => {
     let { idCategory } = req.params;
     let { idProduct } = req.params;
 
@@ -134,7 +142,51 @@ class ProductController {
       relatedProduct: utils.mutipleMongooseToObject(relatedProduct),
       listCategory: utils.mutipleMongooseToObject(categories),
     });
-  }
-}
+  },
+  searchProduct: async (req, res, next) => {
+    const name = req.query.name;
+    let flag = false;
+    let products = null;
+    let minPrice = 0;
+    let maxPrice = 0;
+    let size = 0;
 
-module.exports = new ProductController();
+    if (req.query.minPrice && req.query.maxPrice) {
+      flag = true;
+      minPrice = req.query.minPrice.slice(0, req.query.minPrice.length - 2);
+      maxPrice = req.query.maxPrice.slice(0, req.query.maxPrice.length - 2);
+    }
+    if (flag) {
+      products = await Product.find({
+        name: { $regex: name, $options: "i" },
+        price: { $gte: minPrice, $lte: maxPrice },
+      });
+      size = await Product.count({
+        name: { $regex: name, $options: "i" },
+        price: { $gte: minPrice, $lte: maxPrice },
+      });
+    } else {
+      products = await Product.find({
+        name: { $regex: name, $options: "i" },
+      });
+      size = await Product.count({
+        name: { $regex: name, $options: "i" },
+      });
+    }
+
+    const categories = await Category.find({});
+
+    let latestProducts = await Product.find({
+      name: { $regex: name, $options: "i" },
+    });
+    latestProducts = latestProducts.slice(0, 3);
+
+    res.render("shop-grid/shop-grid", {
+      products: utils.mutipleMongooseToObject(products),
+      size: size,
+      category: utils.mutipleMongooseToObject(categories),
+      name,
+      latestProducts: utils.mutipleMongooseToObject(latestProducts),
+    });
+  },
+};

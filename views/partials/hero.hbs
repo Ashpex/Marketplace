@@ -14,17 +14,6 @@
                   href="/shop-grid/{{this.idCategory}}"
                 >{{this.name}}</a></li>
             {{/each}}
-            {{! <li><a href="#">Thịt cá, hải sản</a></li>
-            <li><a href="#">Rau củ, trái cây</a></li>
-            <li><a href="#">Đồ uống các loại</a></li>
-            <li><a href="#">Sữa uống các loại</a></li>
-            <li><a href="#">Bánh kẹo các loại</a></li>
-            <li><a href="#">Mì, cháo, phở, bún</a></li>
-            <li><a href="#">Dầu ăn, gia vị</a></li>
-            <li><a href="#">Gạo, bột, đồ khô</a></li>
-            <li><a href="#">Đồ mát, đông lạnh</a></li>
-            <li><a href="#">Chăm sóc cá nhân</a></li>
-            <li><a href="#">Đồ dùng gia đình</a></li> }}
           </ul>
         </div>
       </div>
@@ -32,8 +21,8 @@
       <div class="col-lg-9">
         <div class="hero__search">
           <div class="hero__search__form">
-            <form action="#">
-              <input type="text" placeholder="Bạn muốn mua gì" />
+            <form action="/shop-grid/search" method="GET">
+              <input name="name" type="text" placeholder="Bạn muốn mua gì" style="color: black;" value="{{name}}" />
               <button type="submit" class="site-btn">Tìm kiếm</button>
             </form>
           </div>
@@ -42,7 +31,7 @@
               <i class="fa fa-phone"></i>
             </div>
             <div class="hero__search__phone__text">
-              <h5>+65 11.188.888</h5>
+              <h5>0866 724 877</h5>
               <span>Hỗ trợ 24/7</span>
             </div>
           </div>

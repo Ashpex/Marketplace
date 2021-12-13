@@ -22,9 +22,7 @@
     "nodemon": "^2.0.14",
     "numeral": "^2.0.6",
     "passport": "^0.5.0",
-    "passport-local": "^1.0.0",
-    "uuid": "^8.3.2",
-    "uuidv4": "^6.2.12"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
