@@ -19,3 +19,18 @@ exports.rate = async (req,res) => {
         });
     }
 };
+
+exports.getRatings = (req,res) =>{
+    const productId = req.params.productId;
+    Rating.find({productId})
+        .then((ratings)=>{
+            res.status(200).json(ratings);
+        })
+
+        .catch((error) => {
+            res.status(500).json({
+                status: 'fail',
+                message: error.message,
+            });
+        });
+};

@@ -107,6 +107,9 @@
                                     </form>
                                     <br>
                                     <h6>Đánh giá</h6>
+                                    <div id="ratings">
+                                        
+                                    </div>
                                     <p>Siêu cấp pro</p>
                                 </div>
                             </div>
@@ -171,9 +174,35 @@
                 },
                 success: function(data){
                     console.log(data);
+                    loadRatings();
                 }
 
             });
         });
+
+
+        function loadRatings(){
+            $.getJSON(`/api/product/${$('input[name=productId]').val()}/ratings`,function(data)){
+                console.log(data);
+                let rating = data.rating;
+                let content = data.content;
+                let html ='';
+                for(const rating of data){
+                    for(let i = 0; i < rating.rating; i++){
+                        html+='<i class = "fa fa-star"></i>';
+                    }
+                    for(let i = 0; i < 5 - rating; i++){
+                        html+='<i class = "fa fa-start-o"></i>';
+                    }
+
+                    html+= '<p>${rating.content}</p>';
+
+                }
+
+                $('#ratings').html(html);
+            }
+        }
+        // Load product ratings
+        loadRatings();
     </script>
 {{/section}}
