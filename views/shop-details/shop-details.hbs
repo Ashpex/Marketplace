@@ -99,6 +99,13 @@
                             
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
                                 <div class="product__details__tab__desc">
+                                    <form>
+                                        <input type ="hidden" name="productId" value="{{this._id}}">
+                                        <input type="number" name="rating">
+                                        <input type="content" placeholder="Nhận xét">
+                                        <button type="submit" id="post-rating">Gửi</button>
+                                    </form>
+                                    <br>
                                     <h6>Đánh giá</h6>
                                     <p>Siêu cấp pro</p>
                                 </div>
@@ -145,3 +152,28 @@
         </div>
     </section>
     <!-- Related Product Section End -->
+
+{{#section 'script'}}
+    <script>
+        $('#post-rating').on('click', e =>{
+            e.preventDefault();
+            let rating = $('input[name=rating]').val();
+            let content = $('input[name=content]').val();
+            let ProductId = ('input[name=productId]').val();
+
+            $.ajax({
+                url:'/api/product/rate',
+                method: 'POST',
+                data:{
+                    rating,
+                    content,
+                    productId
+                },
+                success: function(data){
+                    console.log(data);
+                }
+
+            });
+        });
+    </script>
+{{/section}}

@@ -4,6 +4,7 @@ const path = require("path");
 const numeral = require("numeral");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const expressHandlebarsSections = require('express-handlebars-sections');
 
 const passport = require("./middlewares/partport");
 const route = require("./routes");
@@ -14,6 +15,7 @@ const app = express();
 const sessionHandler = require("./middlewares/sessionHandler");
 const logger = require("./middlewares/logger")
 
+const apiProductRouter = require('./api/product');
 
 const hbs = exphbs.create({
   extname: "hbs",
@@ -74,6 +76,9 @@ const hbs = exphbs.create({
     },
   },
 });
+expressHandlebarsSections(hbs);
+
+app.use('/api/product', apiProductRouter);
 
 app.engine("hbs", hbs.engine);
 app.set("views", path.join(__dirname, "views"));
