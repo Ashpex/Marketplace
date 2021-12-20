@@ -1,11 +1,8 @@
 const nodeMailer = require("nodemailer");
 require("dotenv").config();
 
-// const adminEmail = "truongquocvuong1902@gmail.com";
-// const adminPassword = "tggksgsjsxmxwweh";
-
-const adminEmail = process.env.ADMIN_EMAIL;
-const adminPassword = process.env.ADMIN_PASSWORD;
+const adminEmail = process.env.GMAIL_USER;
+const adminPassword = process.env.GMAIL_PASS;
 
 const mailHost = "smtp.gmail.com";
 const mailPort = 587;
