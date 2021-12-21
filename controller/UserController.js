@@ -3,6 +3,7 @@ const utils = require("../utils/mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const SendmailController = require("../controller/SendmailController");
+const jwt = require('jsonwebtoken');
 
 module.exports = {
   getLogin: (req, res, next) => {
@@ -25,6 +26,25 @@ module.exports = {
     }
     res.render("register/register", { layout: false });
   },
+
+  activateAccount: async (req, res, next) => {
+  
+    const {token} = req.body;
+    if(token){
+
+      jwt.verify(token,process.env.JWT_ACC_ACTIVATE, function(err,decodedToken){
+        if(err){
+          return res.status(400).json({error: 'Incorrect or expired link'})
+        }
+        const {name,email,password} = decodedToken;
+      })
+
+    } else{
+      return res.json({error: "Something went wrong!"});
+    }
+    
+  },
+
   postRegister: async (req, res, next) => {
     if (req.body.password !== req.body.re_password) {
       return res.render("register/register", {
@@ -41,6 +61,13 @@ module.exports = {
       });
     }
 
+    const {name,email,password} = req.body;
+
+    const token = jwt.sign(
+      {name,email,password}, 
+      process.env.JWT_ACC_ACTIVATE, 
+      {expiresIn: '15m'});
+
     const hash = bcrypt.hashSync(req.body.password, 10);
     const newUser = new User({
       email: req.body.email,
@@ -54,8 +81,10 @@ module.exports = {
       // send mail
       const result = SendmailController.sendMail(
         req.body.email,
-        "ĐĂNG KÝ TÀI KHOẢN THÀNH CÔNG!",
-        "Chúc mừng bạn đã đăng ký thành công trên MarketPlace!" +
+        "ĐĂNG KÝ TÀI KHOẢN THÀNH CÔNG! XÁC NHẬN EMAIL ĐĂNG KÝ",
+        "Chúc mừng bạn đã đăng ký thành công trên AshStore! Bạn vui lòng xác nhận email đăng ký bằng cách nhấn vào đường link sau:" +
+          "<br>" +
+          "<p>" + `${process.env.CLIENT_URL}/email-activate/${token}` +"<p>" +
           "<br>" +
           `Email: ${req.body.email}` +
           "<br>" +
@@ -64,10 +93,12 @@ module.exports = {
       res.render("login/login", {
         layout: false,
         message:
-          "Đăng ký tài khoản thành công, check mail để xem thông tin tài khoản",
+          "Đăng ký tài khoản thành công, check mail để xem thông tin tài khoản và xác nhận tài khoản",
       });
     });
   },
+
+
 
   getMyAccount: async (req, res, next) => {
     if (req.user == null) {

@@ -19,6 +19,7 @@
     "express-handlebars-sections": "^1.0.1",
     "express-session": "^1.17.2",
     "handlebars-helpers": "^0.10.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.13",
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.14",
