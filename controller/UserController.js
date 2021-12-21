@@ -27,9 +27,9 @@ module.exports = {
     res.render("register/register", { layout: false });
   },
 
-  activateAccount: async (req, res, next) => {
-  
-    const {token} = req.body;
+  getActivateAccount: async (req, res, next) => {
+    const {token} = req.params.token;
+    //const {token} = req.body;
     if(token){
 
       jwt.verify(token,process.env.JWT_ACC_ACTIVATE, function(err,decodedToken){
@@ -38,6 +38,30 @@ module.exports = {
         }
         const {name,email,password} = decodedToken;
       })
+
+      res.json({mesage: "Sign up success!"});
+      res.render("login/login");
+
+    } else{
+      return res.json({error: "Something went wrong!"});
+    }
+    
+  },
+
+  postActivateAccount: async (req, res, next) => {
+    const {token} = req.params.token;
+    //const {token} = req.body;
+    if(token){
+
+      jwt.verify(token,process.env.JWT_ACC_ACTIVATE, function(err,decodedToken){
+        if(err){
+          return res.status(400).json({error: 'Incorrect or expired link'})
+        }
+        const {name,email,password} = decodedToken;
+      })
+
+      res.json({mesage: "Sign up success!"});
+      res.render("login/login");
 
     } else{
       return res.json({error: "Something went wrong!"});

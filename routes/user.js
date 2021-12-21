@@ -23,7 +23,9 @@ router.get("/reset-password/:id", UserController.getResetPassword);
 
 router.post("/reset-password", UserController.postResetPassword);
 
-router.post("/email-activate", UserController.activateAccount);
+router.post("/email-activate", UserController.postActivateAccount);
+
+router.get("/email-activate/:token", UserController.getActivateAccount);
 
 router.get("/logout", UserController.getLogout);
 
