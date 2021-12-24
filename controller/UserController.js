@@ -3,7 +3,7 @@ const utils = require("../utils/mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const SendmailController = require("../controller/SendmailController");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   getLogin: (req, res, next) => {
@@ -28,45 +28,63 @@ module.exports = {
   },
 
   getActivateAccount: async (req, res, next) => {
-    const {token} = req.params.token;
+    const { token } = req.params;
     //const {token} = req.body;
-    if(token){
+    console.log(token);
+    if (token) {
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_ACTIVATE,
+        function (err, decodedToken) {
+          if (err) {
+            return res.status(400).json({ error: "Incorrect or expired link" });
+          }
+          const { id, name, email, password } = decodedToken;
 
-      jwt.verify(token,process.env.JWT_ACC_ACTIVATE, function(err,decodedToken){
-        if(err){
-          return res.status(400).json({error: 'Incorrect or expired link'})
+          User.findByIdAndUpdate(id, { email: email }, (error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("email verification successful");
+            }
+          });
         }
-        const {name,email,password} = decodedToken;
-      })
+      );
 
-      res.json({mesage: "Sign up success!"});
-      res.render("login/login");
-
-    } else{
-      return res.json({error: "Something went wrong!"});
+      res.json({ mesage: "Sign up success!" });
+    } else {
+      return res.json({ error: "Something went wrong!" });
     }
-    
   },
 
   postActivateAccount: async (req, res, next) => {
-    const {token} = req.params.token;
+    const { token } = req.params;
     //const {token} = req.body;
-    if(token){
+    if (token) {
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_ACTIVATE,
+        function (err, decodedToken) {
+          if (err) {
+            return res.status(400).json({ error: "Incorrect or expired link" });
+          }
 
-      jwt.verify(token,process.env.JWT_ACC_ACTIVATE, function(err,decodedToken){
-        if(err){
-          return res.status(400).json({error: 'Incorrect or expired link'})
+          const { id, name, email, password } = decodedToken;
+
+          User.findByIdAndUpdate(id, { email: email }, (error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("email verification successful");
+            }
+          });
         }
-        const {name,email,password} = decodedToken;
-      })
+      );
 
-      res.json({mesage: "Sign up success!"});
-      res.render("login/login");
-
-    } else{
-      return res.json({error: "Something went wrong!"});
+      res.json({ mesage: "Sign up success!" });
+    } else {
+      return res.json({ error: "Something went wrong!" });
     }
-    
   },
 
   postRegister: async (req, res, next) => {
@@ -85,30 +103,35 @@ module.exports = {
       });
     }
 
-    const {name,email,password} = req.body;
-
-    const token = jwt.sign(
-      {name,email,password}, 
-      process.env.JWT_ACC_ACTIVATE, 
-      {expiresIn: '15m'});
+    const { name, email, password } = req.body;
 
     const hash = bcrypt.hashSync(req.body.password, 10);
     const newUser = new User({
-      email: req.body.email,
+      email: "",
       password: hash,
       name: req.body.name,
       address: req.body.address,
       status: true,
     });
+
     newUser.save((err) => {
       if (err) return next(err);
       // send mail
+      const id = newUser._id;
+      const token = jwt.sign(
+        { id, name, email, password },
+        process.env.JWT_ACC_ACTIVATE,
+        { expiresIn: "15m" }
+      );
+
       const result = SendmailController.sendMail(
         req.body.email,
         "ĐĂNG KÝ TÀI KHOẢN THÀNH CÔNG! XÁC NHẬN EMAIL ĐĂNG KÝ",
         "Chúc mừng bạn đã đăng ký thành công trên AshStore! Bạn vui lòng xác nhận email đăng ký bằng cách nhấn vào đường link sau:" +
           "<br>" +
-          "<p>" + `${process.env.CLIENT_URL}/email-activate/${token}` +"<p>" +
+          "<p>" +
+          `${process.env.CLIENT_URL}/email-activate/${token}` +
+          "<p>" +
           "<br>" +
           `Email: ${req.body.email}` +
           "<br>" +
@@ -121,8 +144,6 @@ module.exports = {
       });
     });
   },
-
-
 
   getMyAccount: async (req, res, next) => {
     if (req.user == null) {
@@ -231,7 +252,7 @@ module.exports = {
     const result = SendmailController.sendMail(
       req.body.email,
       "Lấy lại mật khẩu",
-      `Click vào link sau để đặt lại mật khẩu: http://localhost:3000/reset-password/${user._id}`
+      `Click vào link sau để đặt lại mật khẩu: http://localhost:5000/reset-password/${user._id}`
     );
 
     res.render("forgot-password/forgot-password", {
@@ -240,11 +261,13 @@ module.exports = {
     });
   },
   getResetPassword: async (req, res, next) => {
+    console.log(req.params.id);
     const user = await User.findById(req.params.id);
     if (!user) {
       res.render("errors/404");
       return;
     }
+
     res.render("forgot-password/reset-password", {
       layout: false,
       id: req.params.id,

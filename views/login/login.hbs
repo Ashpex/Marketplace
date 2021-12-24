@@ -1,112 +1,89 @@
 <html lang="en">
-  <head>
-    <title>Đăng Nhập</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
 
-    <link
-      href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <title>Đăng Nhập</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
 
-    <link rel="stylesheet" href="/css/style_login.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-  </head>
-  <body
-    style="background-image: url(/img/background/greenery-product-background_53876-90824.jpg); background-size: cover;"
-  >
-    <section class="ftco-section">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-6 text-center mb-5">
-          </div>
+  <link rel="stylesheet" href="/css/style_login.css" />
+
+</head>
+
+<body
+  style="background-image: url(/img/background/greenery-product-background_53876-90824.jpg); background-size: cover;">
+  <section class="ftco-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
         </div>
-        <div class="row justify-content-center">
-          <div class="col-md-7 col-lg-5">
-            <div class="login-wrap p-4 p-md-5" style="border-radius: 15px;">
-              <div class="d-flex">
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+          <div class="login-wrap p-4 p-md-5" style="border-radius: 15px;">
+            <div class="d-flex">
 
-                <div class="w-100">
+              <div class="w-100">
 
-                  <h3 class="mb-4 text-center">Đăng Nhập</h3>
+                <h3 class="mb-4 text-center">Đăng Nhập</h3>
 
-                </div>
-
-                
               </div>
-              <form method="POST" class="login-form">
 
-                {{#if message}}
-                <div class="alert alert-success" role="alert">
-                    {{message}}
-                  </div>
-                {{/if}}
 
-                {{#wrongLogin}}
-                  <div class="alert alert-danger" role="alert">
-                    Email hoặc mật khẩu không đúng!
-                  </div>
-                {{/wrongLogin}}
-
-                <div class="form-group">
-                  <div
-                    class="icon d-flex align-items-center justify-content-center"
-                  ><span class="fa fa-user"></span></div>
-                  <input
-                    name="email"
-                    type="text"
-                    class="form-control rounded-left"
-                    placeholder="Tài Khoản"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <div
-                    class="icon d-flex align-items-center justify-content-center"
-                  ><span class="fa fa-lock"></span></div>
-                  <input
-                    name="password"
-                    type="password"
-                    class="form-control rounded-left"
-                    placeholder="Mật Khẩu"
-                    required
-                  />
-                </div>
-                <div class="form-group d-flex align-items-center">                  
-                  <div class="w-100 d-flex justify-content-center mt-4">
-                    <button
-                      value="Log In"
-                      type="submit"
-                      class="btn btn-primary rounded submit"
-                    >Đăng Nhập</button>
-                  </div>
-                </div>
-                <div class="form-group mt-4">
-                  <div class="w-100 text-center">
-                    <p class="mb-1">Không Có Tài Khoản?
-                      <a href="/register">Đăng Kí</a></p>
-                    <p><a href="/forgot-password">Quên Mật Khẩu</a></p>
-                  </div>
-                </div>
-              </form>
             </div>
+            <form method="POST" action="/login" class="login-form">
+
+              {{#if message}}
+              <div class="alert alert-success" role="alert">
+                {{message}}
+              </div>
+              {{/if}}
+
+              {{#wrongLogin}}
+              <div class="alert alert-danger" role="alert">
+                Email hoặc mật khẩu không đúng!
+              </div>
+              {{/wrongLogin}}
+
+              <div class="form-group">
+                <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span>
+                </div>
+                <input name="email" type="text" class="form-control rounded-left" placeholder="Tài Khoản" required />
+              </div>
+              <div class="form-group">
+                <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-lock"></span>
+                </div>
+                <input name="password" type="password" class="form-control rounded-left" placeholder="Mật Khẩu"
+                  required />
+              </div>
+              <div class="form-group d-flex align-items-center">
+                <div class="w-100 d-flex justify-content-center mt-4">
+                  <button value="Log In" type="submit" class="btn btn-primary rounded submit">Đăng Nhập</button>
+                </div>
+              </div>
+              <div class="form-group mt-4">
+                <div class="w-100 text-center">
+                  <p class="mb-1">Không Có Tài Khoản?
+                    <a href="/register">Đăng Kí</a>
+                  </p>
+                  <p><a href="/forgot-password">Quên Mật Khẩu</a></p>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <script src="/js/jquery_login.min.js"></script>
-    <script src="/js/popper_login.js"></script>
-    <script src="/js/bootstrap_login.min.js"></script>
-    <script src="/js/main_login.js"></script>
+  <script src="/js/jquery_login.min.js"></script>
+  <script src="/js/popper_login.js"></script>
+  <script src="/js/bootstrap_login.min.js"></script>
+  <script src="/js/main_login.js"></script>
 
-  </body>
+</body>
+
 </html>
