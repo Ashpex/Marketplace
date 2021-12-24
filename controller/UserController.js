@@ -29,8 +29,7 @@ module.exports = {
 
   getActivateAccount: async (req, res, next) => {
     const { token } = req.params;
-    //const {token} = req.body;
-    console.log(token);
+
     if (token) {
       jwt.verify(
         token,
@@ -39,9 +38,9 @@ module.exports = {
           if (err) {
             return res.status(400).json({ error: "Incorrect or expired link" });
           }
-          const { id, name, email, password } = decodedToken;
+          const { id, name, email, password, status } = decodedToken;
 
-          User.findByIdAndUpdate(id, { email: email }, (error) => {
+          User.findByIdAndUpdate(id, { status: true }, (error) => {
             if (error) {
               console.log(error);
             } else {
@@ -69,9 +68,9 @@ module.exports = {
             return res.status(400).json({ error: "Incorrect or expired link" });
           }
 
-          const { id, name, email, password } = decodedToken;
+          const { id, name, email, password, status } = decodedToken;
 
-          User.findByIdAndUpdate(id, { email: email }, (error) => {
+          User.findByIdAndUpdate(id, { status: true }, (error) => {
             if (error) {
               console.log(error);
             } else {
@@ -107,19 +106,20 @@ module.exports = {
 
     const hash = bcrypt.hashSync(req.body.password, 10);
     const newUser = new User({
-      email: "",
+      email: email,
       password: hash,
       name: req.body.name,
       address: req.body.address,
-      status: true,
+      status: false,
     });
 
     newUser.save((err) => {
       if (err) return next(err);
       // send mail
       const id = newUser._id;
+      const status = newUser.status;
       const token = jwt.sign(
-        { id, name, email, password },
+        { id, name, email, password, status },
         process.env.JWT_ACC_ACTIVATE,
         { expiresIn: "15m" }
       );

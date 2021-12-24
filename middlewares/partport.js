@@ -17,8 +17,13 @@ passport.use(
         if (!user) {
           return done(null, false, { message: "Incorrect email." });
         }
+        console.log(user);
         if (!validPassword(user, password)) {
           return done(null, false, { message: "Incorrect password." });
+        }
+
+        if (user.status === false) {
+          return done(null, false, { message: "Account was ban." });
         }
 
         return done(null, user);
@@ -39,6 +44,7 @@ passport.serializeUser(function (user, done) {
     name: user.name,
     address: user.address,
     id: user._id,
+    status: user.status,
   });
 });
 
