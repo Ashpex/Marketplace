@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const Category = require("../models/Category");
+const Rating = require("../models/Rating");
 const utils = require("../utils/mongoose");
 const utilsPagination = require("../utils/pagination");
 const utilsAddUrlProduct = require("../utils/getUrlProduct");

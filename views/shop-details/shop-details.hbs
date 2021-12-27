@@ -1,208 +1,255 @@
 {{>hero category= listCategory}}
 
- <!-- Breadcrumb Section Begin -->
- {{#each category}}
-    <section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>{{this.name}}</h2>
-                        <div class="breadcrumb__option">
-                            <a href="/">Trang Chủ</a>
-                            <a href="./{{this.idCategory}}">{{this.name}}</a>
-                            <span>{{this.name}}</span>
-                        </div>
+<!-- Breadcrumb Section Begin -->
+{{#each category}}
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>{{this.name}}</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Trang Chủ</a>
+                        <a href="./{{this.idCategory}}">{{this.name}}</a>
+                        <span>{{this.name}}</span>
+                        <input name="idCategory" type="hidden" value="{{this.idCategory}}">
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 {{/each}}
-    <!-- Breadcrumb Section End -->
+<!-- Breadcrumb Section End -->
 
-     <!-- Product Details Section Begin -->
-    {{#each product}}
-    <section class="product-details spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__pic">
-                        <div class="product__details__pic__item">
-                            <img class="product__details__pic__item--large"
-                                src="{{this.image}}" alt="">
-                        </div>
-                        <div class="product__details__pic__slider owl-carousel">
-                            <img data-imgbigurl="{{this.image}}"
-                                src="{{this.image}}" alt="">
+<!-- Product Details Section Begin -->
+{{#each product}}
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large" src="{{this.image}}" alt="">
+                    </div>
+                    <div class="product__details__pic__slider owl-carousel">
+                        <img data-imgbigurl="{{this.image}}" src="{{this.image}}" alt="">
 
-                            {{#each this.listImgExtra}}
-                            <img data-imgbigurl="{{this}}"
-                                src="{{this}}" alt="">
-                            {{/each}}
-                            {{!-- <img data-imgbigurl="/img/product/details/product-details-3.jpg"
-                                src="/img/product/details/thumb-2.jpg" alt="">
-                            <img data-imgbigurl="/img/product/details/product-details-5.jpg"
-                                src="/img/product/details/thumb-3.jpg" alt="">
-                            <img data-imgbigurl="/img/product/details/product-details-4.jpg"
-                                src="/img/product/details/thumb-4.jpg" alt=""> --}}
-                        </div>
+                        {{#each this.listImgExtra}}
+                        <img data-imgbigurl="{{this}}" src="{{this}}" alt="">
+                        {{/each}}
+                        {{!-- <img data-imgbigurl="/img/product/details/product-details-3.jpg"
+                            src="/img/product/details/thumb-2.jpg" alt="">
+                        <img data-imgbigurl="/img/product/details/product-details-5.jpg"
+                            src="/img/product/details/thumb-3.jpg" alt="">
+                        <img data-imgbigurl="/img/product/details/product-details-4.jpg"
+                            src="/img/product/details/thumb-4.jpg" alt=""> --}}
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__text">
-                        <h3>{{this.name}}</h3>
-                        <div class="product__details__rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i>
-                            <span>(18 đánh giá)</span>
-                        </div>
-                        <div class="product__details__price">{{format this.price}}</div>
-                        <p>{{this.details}}</p>
-                        <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="primary-btn">Thêm vào giỏ hàng</a>
-                        <ul>
-                            <li><b>Tình trạng</b> <span>Có sẵn</span></li>
-                            <li><b>Thời gian giao hàng</b> <span>1 ngày <samp>Nhận miễn phí ngay hôm nay</samp></span></li>                              
-                        </ul>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    <h3>{{this.name}}</h3>
+                    <div class="product__details__rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                        <span>(18 đánh giá)</span>
                     </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
-                                    aria-selected="true">Mô tả</a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Đánh giá <span>(1)</span></a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <h6>Mô tả</h6>
-                                    <p>{{this.details}}</p>
-                                </div>
+                    <div class="product__details__price">{{format this.price}}</div>
+                    <p>{{this.details}}</p>
+                    <div class="product__details__quantity">
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <input type="text" value="1">
                             </div>
-                            
-                            <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <form>
-                                        <input type ="hidden" name="productId" value="{{this._id}}">
-                                        <input type="number" name="rating">
-                                        <input type="content" placeholder="Nhận xét">
-                                        <button type="submit" id="post-rating">Gửi</button>
-                                    </form>
-                                    <br>
-                                    <h6>Đánh giá</h6>
-                                    <div id="ratings">
-                                        
+                        </div>
+                    </div>
+                    <a href="#" class="primary-btn">Thêm vào giỏ hàng</a>
+                    <ul>
+                        <li><b>Tình trạng</b> <span>Có sẵn</span></li>
+                        <li><b>Thời gian giao hàng</b> <span>1 ngày <samp>Nhận miễn phí ngay hôm nay</samp></span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                                aria-selected="true">Mô tả</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" aria-selected="false">Đánh
+                                giá <span>(1)</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Mô tả</h6>
+                                <p>{{this.details}}</p>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <form>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                {{#if ../user}}
+
+                                                <div class="col-2">
+                                                    <input type="number" name="rating" placeholder="số sao" min="0"
+                                                        max="5" style="width:100px">
+                                                </div>
+                                                <div class="col-9">
+                                                    <input type="text" name="content" placeholder="Nhận xét"
+                                                        style="width:100%">
+                                                </div>
+                                                <input type="hidden" name="emailUser" value="{{../user.email}}">
+                                                <button type="button" name="post-rating" id="post-rating">Gửi</button>
+                                                {{/if}}
+                                                <input type="hidden" name="productId" value="{{this.idProduct}}">
+
+
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p>Siêu cấp pro</p>
+
+                                </form>
+                                <br>
+                                <h6>Đánh giá</h6>
+
+                                <div id="ratings">
+
+
+
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    {{/each}}
-    <!-- Product Details Section End -->
 
-    <!-- Related Product Section Begin -->
-    <section class="related-product">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title related__product__title">
-                        <h2>Sản phẩm liên quan</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                {{#each relatedProduct}}
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{this.image}}">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="/shop-grid/{{this.url}}">{{this.name}}</a></h6>
-                            <h5>{{format this.price}}</h5>
                         </div>
                     </div>
                 </div>
-                {{/each}}
-                
             </div>
         </div>
-    </section>
-    <!-- Related Product Section End -->
+    </div>
+    </div>
+</section>
+{{/each}}
+<!-- Product Details Section End -->
+
+<!-- Related Product Section Begin -->
+<section class="related-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title related__product__title">
+                    <h2>Sản phẩm liên quan</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {{#each relatedProduct}}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{this.image}}">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="/shop-grid/{{this.url}}">{{this.name}}</a></h6>
+                        <h5>{{format this.price}}</h5>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+        </div>
+    </div>
+</section>
+<!-- Related Product Section End -->
 
 {{#section 'script'}}
-    <script>
-        $('#post-rating').on('click', e =>{
-            e.preventDefault();
-            let rating = $('input[name=rating]').val();
-            let content = $('input[name=content]').val();
-            let ProductId = ('input[name=productId]').val();
+<script>
+    $('#post-rating').on('click', e => {
+        e.preventDefault();
+        let idCategory = $('input[name=idCategory]').val();
+        let rating = $('input[name=rating]').val();
+        let content = $('input[name=content]').val();
+        let idProduct = $('input[name=productId]').val();
+        let emailUser = $('input[name=emailUser]').val();
+        console.log(idCategory, idProduct, rating, content);
+        $.ajax({
+            url: `/api/product/rate`,
+            method: 'POST',
+            data: {
+                idCategory,
+                idProduct,
+                emailUser,
+                rating,
+                content,
+            },
+            success: function (data) {
+                console.log(data);
+                loadRatings();
+                $('input[name=rating]').val(0);
+                $('input[name=content]').val("");
+            }
 
-            $.ajax({
-                url:'/api/product/rate',
-                method: 'POST',
-                data:{
-                    rating,
-                    content,
-                    productId
-                },
-                success: function(data){
-                    console.log(data);
-                    loadRatings();
-                }
-
-            });
         });
 
+    });
 
-        function loadRatings(){
-            $.getJSON(`/api/product/${$('input[name=productId]').val()}/ratings`,function(data)){
-                console.log(data);
-                let rating = data.rating;
-                let content = data.content;
-                let html ='';
-                for(const rating of data){
-                    for(let i = 0; i < rating.rating; i++){
-                        html+='<i class = "fa fa-star"></i>';
-                    }
-                    for(let i = 0; i < 5 - rating; i++){
-                        html+='<i class = "fa fa-start-o"></i>';
-                    }
+    function loadRatings() {
 
-                    html+= '<p>${rating.content}</p>';
+        let idCategory = $('input[name=idCategory]').val();
+        let productId = $('input[name=productId]').val();
+        console.log(idCategory, productId)
+        $.getJSON(`/api/product/${$('input[name=productId]').val()}/ratings`, function (data) {
+            console.log(data);
 
+
+            let html = ``;
+            for (const rating of data) {
+                console.log(rating);
+                html += `<div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <img src="https://image.ibb.co/jw55Ex/def_face.jpg"
+                                                        class="img img-rounded img-fluid" />
+                                                </div>
+                                                <div class="col-md-10">`
+                html += `<p>${rating.emailUser}</p>`
+                for (let i = 0; i < rating.rating; i++) {
+                    html += `<span class="float-right"><i
+                    class="text-warning fa fa-star" ></i ></span>`;
                 }
 
-                $('#ratings').html(html);
+
+                html += `<div class="clearfix"></div>`;
+                html += `<p>${rating.content}</p> 
+                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>`;
+
             }
-        }
-        // Load product ratings
-        loadRatings();
-    </script>
+
+            $('#ratings').html(html);
+        });
+    }
+    // Load product ratings
+    loadRatings();
+</script>
 {{/section}}

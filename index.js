@@ -4,7 +4,7 @@ const path = require("path");
 const numeral = require("numeral");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const expressHandlebarsSections = require('express-handlebars-sections');
+const expressHandlebarsSections = require("express-handlebars-sections");
 
 const passport = require("./middlewares/partport");
 const route = require("./routes");
@@ -13,9 +13,9 @@ db.connectMongoose();
 
 const app = express();
 const sessionHandler = require("./middlewares/sessionHandler");
-const logger = require("./middlewares/logger")
+const logger = require("./middlewares/logger");
 
-const apiProductRouter = require('./api/product');
+const apiProductRouter = require("./api/product");
 
 const hbs = exphbs.create({
   extname: "hbs",
@@ -78,21 +78,23 @@ const hbs = exphbs.create({
 });
 expressHandlebarsSections(hbs);
 
-app.use('/api/product', apiProductRouter);
-
 app.engine("hbs", hbs.engine);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(session({
-  cookie: {
-    maxAge: 1000*60*60*24*365
-  },
+app.use("/api/product", apiProductRouter);
+app.use(
+  session({
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+    },
 
-  secret: "cats" 
-}));app.use(passport.initialize());
+    secret: "cats",
+  })
+);
+app.use(passport.initialize());
 app.use(passport.session());
 app.use(function (req, res, next) {
   res.locals.user = req.user;
@@ -102,8 +104,6 @@ app.use(function (req, res, next) {
 app.use(sessionHandler);
 app.use(logger);
 route(app);
-
-
 
 app.use((req, res) => {
   res.render("errors/404", { layout: false });
@@ -117,4 +117,3 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT || 5000, () => {
   console.log(`App listening on port ${process.env.PORT || 5000}`);
 });
-

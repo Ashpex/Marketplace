@@ -8,10 +8,11 @@ const Product = new Schema(
     quanlity: { type: String },
     price: { type: Number },
     image: { type: String },
-    //listIdRating: [],
+
     category: { type: String, maxlength: 255 },
     idProduct: { type: String, maxlength: 255 },
     listImgExtra: [],
+    listIdRating: [],
     producer: { type: String, maxlength: 255 },
   },
   { collection: "product" }

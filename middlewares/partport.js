@@ -22,7 +22,7 @@ passport.use(
           return done(null, false, { message: "Incorrect password." });
         }
 
-        if (user.status === false) {
+        if (user.status == false) {
           return done(null, false, { message: "Account was ban." });
         }
 
