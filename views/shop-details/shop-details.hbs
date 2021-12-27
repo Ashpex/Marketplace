@@ -104,23 +104,28 @@
                                             <div class="row">
                                                 {{#if ../user}}
 
+                                                <div class="col-3">
+                                                    <input type="number" name="rating" class="form-control" placeholder="Số sao" min="0" max ="5">
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="text" class="form-control" name="content" placeholder="Nhận xét">
+                                                </div>                                                        
+
                                                 <div class="col-2">
-                                                    <input type="number" name="rating" placeholder="số sao" min="0"
-                                                        max="5" style="width:100px">
+                                                    <button type="button" class="btn btn-primary" name="post-rating" id="post-rating">Gửi</button>
+                                                    <input type="hidden" name="emailUser" value="{{../user.email}}">
+
                                                 </div>
-                                                <div class="col-9">
-                                                    <input type="text" name="content" placeholder="Nhận xét"
-                                                        style="width:100%">
-                                                </div>
-                                                <input type="hidden" name="emailUser" value="{{../user.email}}">
-                                                <button type="button" name="post-rating" id="post-rating">Gửi</button>
+                                                
+
                                                 {{/if}}
                                                 <input type="hidden" name="productId" value="{{this.idProduct}}">
-
 
                                             </div>
                                         </div>
                                     </div>
+
+
 
                                 </form>
                                 <br>
