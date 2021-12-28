@@ -47,5 +47,5 @@ exports.getRatings = async (req, res) => {
   }
   const n = listRating.length;
   let listRatingSend = listRating.slice((page - 1) * 6, (page - 1) * 6 + 6);
-  res.status(200).json(listRatingSend);
+  res.status(200).json({ count: n, data: listRatingSend });
 };
