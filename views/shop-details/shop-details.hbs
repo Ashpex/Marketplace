@@ -105,18 +105,21 @@
                                                 {{#if ../user}}
 
                                                 <div class="col-3">
-                                                    <input type="number" name="rating" class="form-control" placeholder="Số sao" min="0" max ="5">
+                                                    <input type="number" name="rating" class="form-control"
+                                                        placeholder="Số sao" min="0" max="5">
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="text" class="form-control" name="content" placeholder="Nhận xét">
-                                                </div>                                                        
+                                                    <input type="text" class="form-control" name="content"
+                                                        placeholder="Nhận xét">
+                                                </div>
 
                                                 <div class="col-2">
-                                                    <button type="button" class="btn btn-primary" name="post-rating" id="post-rating">Gửi</button>
+                                                    <button type="button" class="btn btn-primary" name="post-rating"
+                                                        id="post-rating">Gửi</button>
                                                     <input type="hidden" name="emailUser" value="{{../user.email}}">
 
                                                 </div>
-                                                
+
 
                                                 {{/if}}
                                                 <input type="hidden" name="productId" value="{{this.idProduct}}">
@@ -205,7 +208,7 @@
             },
             success: function (data) {
                 console.log(data);
-                loadRatings();
+                loadRatings(1);
                 $('input[name=rating]').val(0);
                 $('input[name=content]').val("");
             }
@@ -214,26 +217,26 @@
 
     });
 
-    function loadRatings() {
+    function loadRatings(currentPage) {
 
         let idCategory = $('input[name=idCategory]').val();
         let productId = $('input[name=productId]').val();
         console.log(idCategory, productId)
-        $.getJSON(`/api/product/${$('input[name=productId]').val()}/ratings`, function (data) {
+        $.getJSON(`/api/product/${$('input[name=productId]').val()}/ratings?page=${currentPage}`, async function (data) {
             console.log(data);
-
-
+            const listRating = data.data;
+            const n = data.count;
             let html = ``;
-            for (const rating of data) {
+            for (const rating of listRating) {
                 console.log(rating);
                 html += `<div class="card">
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-2">
+                                                <div class="col-md-1">
                                                     <img src="https://image.ibb.co/jw55Ex/def_face.jpg"
-                                                        class="img img-rounded img-fluid" />
+                                                        class="img img-rounded img-fluid"/>
                                                 </div>
-                                                <div class="col-md-10">`
+                                                <div class="col-md-11">`
                 html += `<p>${rating.emailUser}</p>`
                 for (let i = 0; i < rating.rating; i++) {
                     html += `<span class="float-right"><i
@@ -250,11 +253,105 @@
                                     </div>`;
 
             }
-
+            html = await getPagination(html, n, currentPage);
             $('#ratings').html(html);
         });
     }
+
+    function getPagination(html, n, currentPage) {
+        sizePage = Math.max(parseInt(n / 6 + 1));
+
+        if (currentPage == 1 & n <= 6) {
+            return html;
+        } else if (currentPage == 1 & n <= 12) {
+            html += `<nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">`
+            html += `<li class="page-item disabled">
+            <button class="page-link"  >Previous</button>
+            </li>`;
+            html += `<li  class="page-item active"><button class="page-link" onclick="loadRatings(1)" >1</button></li>`;
+            html += `<li class="page-item"><button class="page-link" onclick="loadRatings(2)" >2</button></li>`;
+            html += `<li class="page-item">
+                <button class="page-link"onclick="loadRatings(2)" >Next</button>
+                    </li>
+                    </ul>
+                    </nav>`
+        } else if (currentPage == 1) {
+            html += `<nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">`
+            html += `<li class="page-item disabled">
+            <button class="page-link"  >Previous</button>
+            </li>`;
+            html += `<li  class="page-item active"><button class="page-link" onclick="loadRatings(1)" >1</button></li>`;
+            html += `<li class="page-item"><button class="page-link" onclick="loadRatings(2)" >2</button></li>`;
+            html += `<li class="page-item"><button class="page-link"onclick="loadRatings(3)"  >3</button></li>`;
+            html += `<li class="page-item">
+                <button class="page-link"onclick="loadRatings(2)" >Next</button>
+                    </li>
+                    </ul>
+                    </nav>`
+        } else if (currentPage == 2 & n <= 12) {
+            html += `<nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">`
+            html += `<li class="page-item" >
+            <button class="page-link" onclick="loadRatings(${currentPage - 1})">Previous</button>
+            </li>`
+            html += `<li  class="page-item"><button class="page-link" onclick="loadRatings(1)" >1</button></li>`;
+            html += `<li class="page-item active"><button class="page-link" onclick="loadRatings(2)" >2</button></li>`;
+
+            html += `<li class="page-item disabled">
+                <button class="page-link" onclick="loadRatings(3)" >Next</button>
+                    </li>
+                    </ul>
+                    </nav>`
+        }
+        else if (currentPage == 2) {
+            html += `<nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">`
+            html += `<li class="page-item" >
+            <button class="page-link" onclick="loadRatings(${currentPage - 1})">Previous</button>
+            </li>`
+            html += `<li  class="page-item"><button class="page-link" onclick="loadRatings(1)" >1</button></li>`;
+            html += `<li class="page-item active"><button class="page-link" onclick="loadRatings(2)" >2</button></li>`;
+            html += `<li class="page-item"><button class="page-link"onclick="loadRatings(3)"  >3</button></li>`;
+            html += `<li class="page-item">
+                <button class="page-link" onclick="loadRatings(3)" >Next</button>
+                    </li>
+                    </ul>
+                    </nav>`
+        }
+        else if (currentPage >= sizePage) {
+            html += `<nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">`
+            html += `<li class="page-item" >
+            <button class="page-link" onclick="loadRatings(${currentPage - 1})">Previous</button>
+            </li>`
+            html += `<li  class="page-item"><button class="page-link" onclick="loadRatings(${currentPage - 2})" >${currentPage - 2}</button></li>`;
+            html += `<li class="page-item"><button class="page-link" onclick="loadRatings(${currentPage - 1})" >${currentPage - 1}</button></li>`;
+            html += `<li class="page-item active"><button class="page-link"onclick="loadRatings(${currentPage})"  >${currentPage}</button></li>`;
+            html += `<li class="page-item">
+                <button class="page-link disabled" onclick="loadRatings(${currentPage + 1})" >Next</button>
+                    </li>
+                    </ul>
+                    </nav>`
+        } else {
+            html += `<nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">`
+            html += `<li class="page-item" >
+            <button class="page-link" onclick="loadRatings(${currentPage - 1})">Previous</button>
+            </li>`
+            html += `<li  class="page-item"><button class="page-link" onclick="loadRatings(${currentPage - 1})" >${currentPage - 1}</button></li>`;
+            html += `<li class="page-item active"><button class="page-link" onclick="loadRatings(${currentPage})" >${currentPage}</button></li>`;
+            html += `<li class="page-item"><button class="page-link"onclick="loadRatings(${currentPage + 1})"  >${currentPage + 1}</button></li>`;
+            html += `<li class="page-item">
+                <button class="page-link"onclick="loadRatings(${currentPage + 1})" >Next</button>
+                    </li>
+                    </ul>
+                    </nav>`
+        }
+        return html;
+    }
     // Load product ratings
-    loadRatings();
+    loadRatings(1);
 </script>
 {{/section}}
