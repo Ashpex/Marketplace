@@ -37,7 +37,7 @@ module.exports = {
       var paginationLink = url + "?page=" + 3;
       var pagination = { currentPage, paginationLink, flag };
       paginationLinkList.push(pagination);
-    } else if (currentPage > sizePage) {
+    } else if (currentPage >= sizePage) {
       currentPage -= 2;
       var flag = false;
       var paginationLink = url + "?page=" + currentPage;
@@ -97,7 +97,7 @@ module.exports = {
   getRightPage: function (url, currentPage, sizePage) {
     var paginationLinkList = [];
     let flag = true;
-    if (currentPage > sizePage) {
+    if (currentPage >= sizePage) {
       flag = false;
     }
 

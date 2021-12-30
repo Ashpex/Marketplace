@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,11 +17,12 @@
     <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
-    <link rel="stylesheet" href="/css/main.css" type="text/css"> 
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 </head>
+
 <body>
-     <!-- Page Preloder -->
+    <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
@@ -31,36 +33,33 @@
         <div class="humberger__menu__logo">
             <a href="#"><img src="img/logo.png" alt=""></a>
         </div>
-        
-        <div class="humberger__menu__widget">            
+
+        <div class="humberger__menu__widget">
             <div class="header__top__right__auth">
                 {{!-- <a href="#"><i class="fa fa-user"></i> Login</a> --}}
                 {{#if user}}
-                <a href="#" style="cursor: auto;">    
-                  <i class="fas fa-user-check" style="margin-left: 10px;"></i>            
-                  Hello
-                  {{user.name}}
+                <a href="#" style="cursor: auto;">
+                    <i class="fas fa-user-check" style="margin-left: 10px;"></i>
+                    Hello
+                    {{user.name}}
                 </a>
                 <a href="/myaccount">
-                  <i class="fa fa-user" style="margin-left: 10px;"></i>
-                  Tài Khoản</a>
+                    <i class="fa fa-user" style="margin-left: 10px;"></i>
+                    Tài Khoản</a>
                 <a href="/logout">
-                  <i class="fas fa-sign-out-alt" style="margin-left: 10px;"></i>
-                  Đăng Xuất</a>
-              {{else}}
+                    <i class="fas fa-sign-out-alt" style="margin-left: 10px;"></i>
+                    Đăng Xuất</a>
+                {{else}}
                 <a href="/login">
-                  <i class="fas fa-sign-in-alt" style="margin-left: 10px;"></i>
-                  Đăng nhập</a>
-                <a href="/register"><i
-                    class="fa fa-user-plus"
-                    style="margin-left: 10px;"
-                  ></i>
-                  Đăng ký</a>
-              {{/if}}
+                    <i class="fas fa-sign-in-alt" style="margin-left: 10px;"></i>
+                    Đăng nhập</a>
+                <a href="/register"><i class="fa fa-user-plus" style="margin-left: 10px;"></i>
+                    Đăng ký</a>
+                {{/if}}
             </div>
-            
+
         </div>
-        
+
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="/">Trang chủ</a></li>
@@ -92,12 +91,12 @@
     </div>
     <!-- Humberger End -->
 
-    
-   {{>header}}
-   
+
+
+
 
     {{{body}}}
-    
+
     {{>footer}}
 
     <!-- Js Plugins -->
@@ -111,4 +110,5 @@
     <script src="/js/main.js"></script>
     {{{_sections.script}}}
 </body>
+
 </html>
