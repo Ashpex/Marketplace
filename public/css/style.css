@@ -711,6 +711,47 @@ ol {
   height: 50px;
 }
 
+.hero__search__cart {
+  float: right;
+  margin-left: 25px;
+}
+
+.hero__search__cart__icon {
+  font-size: 18px;
+  color: #7fad39;
+  height: 50px;
+  width: 50px;
+  background: #f5f5f5;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%;
+  float: left;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__search__cart__icon a{
+  color: #7fad39;
+}
+
+.hero__search__cart__text {
+  overflow: hidden;
+}
+
+.hero__search__cart__text h5 {
+  color: #1c1c1c;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.hero__search__cart__text span {
+  font-size: 14px;
+  color: #6f6f6f;
+}
+
+
 .hero__search__phone {
   float: right;
 }
@@ -730,6 +771,8 @@ ol {
   align-items: center;
   justify-content: center;
 }
+
+
 
 .hero__search__phone__text {
   overflow: hidden;
