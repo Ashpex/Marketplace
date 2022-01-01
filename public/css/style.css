@@ -772,7 +772,9 @@ ol {
   justify-content: center;
 }
 
-
+.hero__search__phone__icon a{
+  color: #7fad39;
+}
 
 .hero__search__phone__text {
   overflow: hidden;
@@ -3285,10 +3287,17 @@ ol {
   .hero__search__form form .hero__search__categories {
     display: none;
   }
+
+  .hero__search__cart {
+    float: left;
+    margin-top: 30px;
+  }
+
   .hero__search__phone {
     float: left;
     margin-top: 30px;
   }
+
   .categories__slider.owl-carousel .owl-nav {
     text-align: center;
     margin-top: 40px;
