@@ -16,6 +16,7 @@ const sessionHandler = require("./middlewares/sessionHandler");
 const logger = require("./middlewares/logger");
 
 const apiProductRouter = require("./api/product");
+const apiShoppingCartRouter = require("./api/shopping-cart");
 
 const hbs = exphbs.create({
   extname: "hbs",
@@ -81,10 +82,11 @@ expressHandlebarsSections(hbs);
 app.engine("hbs", hbs.engine);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
+
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use("/api/product", apiProductRouter);
+
 app.use(
   session({
     cookie: {
@@ -104,6 +106,9 @@ app.use(function (req, res, next) {
 app.use(sessionHandler);
 app.use(logger);
 route(app);
+
+app.use("/api/product", apiProductRouter);
+app.use("/api/shoppingCart", apiShoppingCartRouter);
 
 app.use((req, res) => {
   res.render("errors/404", { layout: false });
