@@ -14,6 +14,7 @@ db.connectMongoose();
 const app = express();
 const sessionHandler = require("./middlewares/sessionHandler");
 const logger = require("./middlewares/logger");
+const userShoppingCart = require("./middlewares/userShoppingCart");
 
 const apiProductRouter = require("./api/product");
 const apiShoppingCartRouter = require("./api/shopping-cart");
@@ -101,14 +102,16 @@ app.use(passport.session());
 app.use(function (req, res, next) {
   res.locals.user = req.user;
   // res.locals.authenticated = !req.user.anonymous;
+
   next();
 });
 app.use(sessionHandler);
 app.use(logger);
-route(app);
-
 app.use("/api/product", apiProductRouter);
 app.use("/api/shoppingCart", apiShoppingCartRouter);
+
+app.use(userShoppingCart);
+route(app);
 
 app.use((req, res) => {
   res.render("errors/404", { layout: false });

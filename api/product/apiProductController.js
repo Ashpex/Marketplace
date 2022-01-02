@@ -41,11 +41,16 @@ exports.getRatings = async (req, res) => {
 
   let listIdRating = product.listIdRating;
   let listRating = [];
-  for (const idRating of listIdRating) {
+  for await (const idRating of listIdRating) {
     let rating = await Rating.findById(idRating);
     listRating.push(rating);
   }
   const n = listRating.length;
-  let listRatingSend = listRating.slice((page - 1) * 6, (page - 1) * 6 + 6);
+
+  let listRatingSend = await listRating.slice(
+    (page - 1) * 6,
+    (page - 1) * 6 + 6
+  );
+
   res.status(200).json({ count: n, data: listRatingSend });
 };

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const Session = new Schema(
   {
     idUser: { type: String, maxlength: 255 },
-    idShoppingCart: { type: Schema.ObjectId },
+    idShoppingCart: { type: Schema.Types.ObjectId },
   },
   { collection: "session" }
 );
