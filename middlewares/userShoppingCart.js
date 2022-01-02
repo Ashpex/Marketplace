@@ -25,6 +25,16 @@ module.exports = async function (req, res, next) {
         const shoppingCartUser = await ShoppingCart.findById(
           user.idShoppingCart
         );
+        if (shoppingCartUser == null) {
+          await User.findOneAndUpdate(
+            { email: req.user.email },
+            {
+              idShoppingCart: shoppingCart._id,
+            }
+          );
+          await Session.findByIdAndDelete(session._id);
+          return;
+        }
         let newData = await checkDataShoppingCart(
           shoppingCart,
           shoppingCartUser

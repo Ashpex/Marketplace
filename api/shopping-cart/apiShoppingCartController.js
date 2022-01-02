@@ -2,6 +2,7 @@ const Session = require("../../models/Session");
 const ShoppingCart = require("../../models/ShoppingCart");
 const ProductOrder = require("../../models/ProductOrder");
 const User = require("../../models/User");
+const Product = require("../../models/Product");
 
 module.exports = {
   addShoppingCart: async (req, res) => {
@@ -9,6 +10,7 @@ module.exports = {
     console.log(idProduct);
     console.log(req.session.unauthId);
     //const newSession = new Session()
+    const product = await Product.findOne({ idProduct: idProduct });
     if (!req.user) {
       const session = await Session.findOne({ idUser: req.session.unauthId });
       const shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
@@ -21,6 +23,9 @@ module.exports = {
       if (id === null) {
         const productOrder = new ProductOrder({
           idProduct: idProduct,
+          image: product.image,
+          name: product.name,
+          unitPrice: product.price,
           quantity: 1,
         });
         await productOrder.save((err, data) => {
@@ -69,6 +74,9 @@ module.exports = {
       if (id === null) {
         const productOrder = new ProductOrder({
           idProduct: idProduct,
+          image: product.image,
+          name: product.name,
+          unitPrice: product.price,
           quantity: 1,
         });
         await productOrder.save((err, data) => {
@@ -111,7 +119,15 @@ module.exports = {
   getShoppingCart: async function (req, res) {
     if (!req.user) {
       const session = await Session.findOne({ idUser: req.session.unauthId });
-      const shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
+      let shoppingCart;
+      if (session != null) {
+        shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
+      } else {
+        return res.status(200).json({
+          result: "no product order",
+          data: [{}],
+        });
+      }
       let listProductOrder = [];
       for await (let idProductOrder of shoppingCart.listProductOrder) {
         let productOrder = await ProductOrder.findById(idProductOrder);
@@ -123,6 +139,18 @@ module.exports = {
         data: listProductOrder,
       });
     } else {
+      const user = await User.findOne({ email: req.user.email });
+      const shoppingCartUser = await ShoppingCart.findById(user.idShoppingCart);
+      let listProductOrder = [];
+      for await (let idProductOrder of shoppingCartUser.listProductOrder) {
+        let productOrder = await ProductOrder.findById(idProductOrder);
+        listProductOrder.push(productOrder);
+      }
+
+      return res.status(200).json({
+        result: "ok",
+        data: listProductOrder,
+      });
     }
   },
 };

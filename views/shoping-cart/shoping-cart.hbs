@@ -35,73 +35,9 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="shoping__cart__item">
-                                    <img src="img/cart/cart-1.jpg" alt="">
-                                    <h5>Rau củ tổng hợp</h5>
-                                </td>
-                                <td class="shoping__cart__price">
-                                    55.000đ
-                                </td>
-                                <td class="shoping__cart__quantity">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="2">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="shoping__cart__total">
-                                    $110.00
-                                </td>
-                                <td class="shoping__cart__item__close">
-                                    <span class="icon_close"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="shoping__cart__item">
-                                    <img src="img/cart/cart-2.jpg" alt="">
-                                    <h5>Rau xanh Đà Lạt</h5>
-                                </td>
-                                <td class="shoping__cart__price">
-                                    39.000đ
-                                </td>
-                                <td class="shoping__cart__quantity">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="shoping__cart__total">
-                                    $39.000đ
-                                </td>
-                                <td class="shoping__cart__item__close">
-                                    <span class="icon_close"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="shoping__cart__item">
-                                    <img src="img/cart/cart-3.jpg" alt="">
-                                    <h5>Chuối ngự</h5>
-                                </td>
-                                <td class="shoping__cart__price">
-                                    69.000đ
-                                </td>
-                                <td class="shoping__cart__quantity">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="shoping__cart__total">
-                                    69.000đ
-                                </td>
-                                <td class="shoping__cart__item__close">
-                                    <span class="icon_close"></span>
-                                </td>
-                            </tr>
+                        <tbody id="tableProductOrder">
+
+
                         </tbody>
                     </table>
                 </div>
@@ -140,3 +76,46 @@
     </div>
 </section>
 <!-- Shopping Cart Section End -->
+{{#section 'script'}}
+<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+
+<script>
+    function loadShoppingCart() {
+        $.getJSON("/api/shoppingCart/getShoppingCart", async function (data) {
+            console.log(data);
+            let html = ``;
+            let listProductOrder = data.data;
+
+            for (let productOrder of listProductOrder) {
+                let tolPrice = productOrder.quantity * productOrder.unitPrice;
+                let test = numeral(tolPrice).format("0,0") + " đ";
+                html += `<tr>
+                                <td class="shoping__cart__item">
+                                    <img src="${productOrder.image}" alt="" style="width:101px; height:100px">
+                                    <h5>${productOrder.name}</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    ${productOrder.unitPrice}
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="${productOrder.quantity}">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    ${test}đ
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close"></span>
+                                </td>
+                            </tr>
+                            `
+            }
+            $('#tableProductOrder').html(html);
+        })
+    }
+    loadShoppingCart()
+</script>
+{{/section}}
