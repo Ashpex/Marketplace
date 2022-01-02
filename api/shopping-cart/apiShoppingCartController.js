@@ -57,14 +57,9 @@ module.exports = {
 
       console.log(session);
     } else {
-      const session = await Session.findOne({ idUser: req.session.unauthId });
-      const shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
-      await User.findOneAndUpdate(
-        { email: req.user.email },
-        {
-          idShoppingCart: shoppingCart._id,
-        }
-      );
+      const user = await User.findOne({ email: req.user.email });
+      const shoppingCart = await ShoppingCart.findById(user.idShoppingCart);
+
       let listProductOrder = [];
       for await (let idProductOrder of shoppingCart.listProductOrder) {
         let productOrder = await ProductOrder.findById(idProductOrder);
@@ -113,7 +108,23 @@ module.exports = {
       result: "ok",
     });
   },
-  getShoppingCart: function (req, res) {},
+  getShoppingCart: async function (req, res) {
+    if (!req.user) {
+      const session = await Session.findOne({ idUser: req.session.unauthId });
+      const shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
+      let listProductOrder = [];
+      for await (let idProductOrder of shoppingCart.listProductOrder) {
+        let productOrder = await ProductOrder.findById(idProductOrder);
+        listProductOrder.push(productOrder);
+      }
+
+      return res.status(200).json({
+        result: "ok",
+        data: listProductOrder,
+      });
+    } else {
+    }
+  },
 };
 function containsProduct(idProduct, list) {
   for (let item of list) {

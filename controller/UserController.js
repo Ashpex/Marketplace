@@ -1,9 +1,12 @@
+const jwt = require("jsonwebtoken");
+
 const passport = require("../middlewares/partport");
 const utils = require("../utils/mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const SendmailController = require("../controller/SendmailController");
-const jwt = require("jsonwebtoken");
+const Session = require("../models/Session");
+const ShoppingCart = require("../models/ShoppingCart");
 
 module.exports = {
   getLogin: (req, res, next) => {
@@ -16,9 +19,36 @@ module.exports = {
       wrongLogin: req.query.wrongLogin,
     });
   },
-  getLogout: (req, res, next) => {
+  getLogout: async (req, res, next) => {
     req.logout();
     res.redirect("/home");
+    const session = await Session.findOne({ idUser: req.session.unauthId });
+    if (session == null) {
+      const shoppingCart = await new ShoppingCart({
+        listProductOrder: [],
+        status: false,
+        purchasedTime: new Date().toLocaleString(),
+      });
+      shoppingCart.save(async (err, data) => {
+        if (err) {
+          console.log("hihi");
+          console.log(err);
+          res.render("errors/500", { error: err });
+        } else {
+          const newSession = await new Session({
+            idUser: req.session.unauthId,
+            idShoppingCart: data._id,
+          });
+          newSession.save((err) => {
+            if (err) {
+              console.log("hihi1");
+              console.log(err);
+              res.render("errors/500", { error: err });
+            }
+          });
+        }
+      });
+    }
   },
   getRegister: (req, res, next) => {
     if (req.user) {
