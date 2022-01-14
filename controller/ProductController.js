@@ -21,7 +21,7 @@ module.exports = {
     let size = await Product.count({});
     let sizePage = Math.max(parseInt(size / perPage + 1));
 
-    let categories = await Category.find({});
+    let categories = await Category.find({}Q);
     var leftPage = await utilsPagination.getLeftPage(
       "/shop-grid",
       page,
@@ -29,7 +29,7 @@ module.exports = {
     );
     var pagination = await utilsPagination.getPagination(
       "/shop-grid",
-      page,
+      page,Q
       sizePage
     );
     var rightPage = await utilsPagination.getRightPage(
