@@ -72,6 +72,7 @@ async function checkDataShoppingCart(shoppingCart, shoppingCartUser) {
     listProductOrderUser.push(productOrder);
   }
   newData = [];
+  console.log(listProductOrderUser);
   for await (let productOrder of listProductOrderUser) {
     let item = containsProduct(productOrder.idProduct, listProductOrder);
     if (item != null) {

@@ -164,7 +164,7 @@ module.exports = {
             },
           }
         );
-        await ProductOrder.findOneAndDelete(idProductOrder);
+        await ProductOrder.findByIdAndDelete(idProductOrder);
         res.status(200).json({ result: "Success" });
       } catch (error) {
         res.status(400).json({ result: "Failed" });
@@ -179,7 +179,7 @@ module.exports = {
             },
           }
         );
-        await ProductOrder.findOneAndDelete(idProductOrder);
+        await ProductOrder.findByIdAndDelete(idProductOrder);
         res.status(200).json({ result: "Success" });
       } catch (error) {
         res.status(400).json({ result: "Failed" });
@@ -206,6 +206,7 @@ function containsProduct(idProduct, list) {
   if (list.length <= 0) {
     return null;
   }
+  console.log(list);
   for (let item of list) {
     if (item.idProduct === idProduct) {
       return item._id;

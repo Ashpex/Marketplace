@@ -123,7 +123,7 @@
             let listProductOrder = data.data;
             let sumPrice = 0;
             for await (let productOrder of listProductOrder) {
-
+                console.log(productOrder);
                 let tolPrice = productOrder.quantity * productOrder.unitPrice;
                 sumPrice += tolPrice;
                 let tolPriceVal = numeral(tolPrice).format("0,0") + " đ";
@@ -167,7 +167,7 @@
 </script>
 <script>
     function removeShoppingCart(idProductOrder) {
-
+        console.log(idProductOrder);
         $.ajax({
             url: `/api/shoppingCart/removeProductOder`,
             method: 'PUT',
