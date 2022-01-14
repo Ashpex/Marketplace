@@ -122,9 +122,9 @@
                                                 {{/if}}
                                                 <input type="hidden" name="productId" value="{{this.idProduct}}">
                                                 {{#unless ../user}}
-                                                <p>
-                                                    <center>Bạn vui lòng đăng nhập để đánh giá sản phẩm</center>
-                                                </p>
+                                                    <div class="alert alert-warning" role="alert">
+                                                        Bạn vui lòng đăng nhập để đánh giá sản phẩm
+                                                    </div>
                                                 {{/unless}}
                                             </div>
                                         </div>

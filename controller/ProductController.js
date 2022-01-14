@@ -29,7 +29,7 @@ module.exports = {
     );
     var pagination = await utilsPagination.getPagination(
       "/shop-grid",
-      page,Q
+      page,
       sizePage
     );
     var rightPage = await utilsPagination.getRightPage(
