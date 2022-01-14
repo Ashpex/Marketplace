@@ -25,6 +25,18 @@ const hbs = exphbs.create({
   layoutsDir: __dirname + "/views/layouts",
   partialsDir: __dirname + "/views/partials",
   helpers: {
+    // Function to do basic mathematical operation in handlebar
+    math: function (lvalue, operator, rvalue) {
+      lvalue = parseFloat(lvalue);
+      rvalue = parseFloat(rvalue);
+      return {
+        "+": lvalue + rvalue,
+        "-": lvalue - rvalue,
+        "*": lvalue * rvalue,
+        "/": lvalue / rvalue,
+        "%": lvalue % rvalue,
+      }[operator];
+    },
     format: (val) => numeral(val).format("0,0") + " đ",
     time: (val, current, block) => {
       var accum = "";

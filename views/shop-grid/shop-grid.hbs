@@ -126,8 +126,11 @@
                                     <div class="product__discount__item__text">
                                         <span>{{this.category}}</span>
                                         <h5><a href="/shop-grid/{{this.url}}">{{this.name}}</a></h5>
-                                        <div class="product__item__price">{{format this.price}} <span>{{format
-                                                this.price}}</span></div>
+                                        <div class="product__item__price">{{format this.price}} 
+                                            <span>
+                                                {{math this.price "*" 1.2}}                                                
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
