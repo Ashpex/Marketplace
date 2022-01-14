@@ -1,6 +1,7 @@
 const productRouter = require("./product");
 const homeRouter = require("./home");
 const userRouter = require("./user");
+const checkOutRouter = require("./checkOut");
 
 function route(app) {
   app.use("/home", homeRouter);
@@ -29,9 +30,7 @@ function route(app) {
     res.render("contact/contact");
   });
 
-  app.get("/checkout", function (req, res) {
-    res.render("checkout/checkout");
-  });
+  app.use("/checkout", checkOutRouter);
 }
 
 module.exports = route;
