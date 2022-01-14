@@ -35,10 +35,17 @@
                                 <th></th>
                             </tr>
                         </thead>
+                        <div id="editForm">
+                            <form id="formUpdateProductOrder">
+                            </form>
+                        </div>
                         <tbody id="tableProductOrder">
 
 
+
+
                         </tbody>
+
                     </table>
                 </div>
             </div>
@@ -46,9 +53,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="shoping__cart__btns">
-                    <a href="#" class="primary-btn cart-btn">Tiếp tục mua sắm</a>
-                    <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                        Cập nhật giỏ hàng</a>
+                    <a href="/shop-grid" class="primary-btn cart-btn" style="background: #7fad39; color: #f8f9fa;">Tiếp
+                        tục mua sắm</a>
+                    <button onclick="updateListProductOder()" class="primary-btn cart-btn cart-btn-right"
+                        style="background: #7fad39;border: aliceblue;color: #f8f9fa;" data-toggle="modal"
+                        data-target="#notification">
+                        {{!-- <span class="icon_loading"></span> --}}
+                        Cập nhật giỏ hàng</button>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -67,7 +78,7 @@
                     <h5>Giỏ hàng</h5>
                     <ul>
                         {{!-- <li>Subtotal <span>$454.98</span></li> --}}
-                        <li>Tổng tiền <span>454.000đ</span></li>
+                        <li id="sumPrice"></li>
                     </ul>
                     <a href="/checkout" class="primary-btn">THANH TOÁN</a>
                 </div>
@@ -75,47 +86,123 @@
         </div>
     </div>
 </section>
+<!-- Modal -->
+<div class="modal fade" id="notification" tabindex="-1" role="dialog" aria-labelledby="notification-label"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notification-label">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Cập nhật thành công giỏ hàng
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Shopping Cart Section End -->
 {{#section 'script'}}
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 
 <script>
     function loadShoppingCart() {
+
+        $("#formUpdateProductOrder").remove();
+        let fieldSet = $("<form id=\"formUpdateProductOrder\"></form>");
+        $('#editForm').append(fieldSet);
         $.getJSON("/api/shoppingCart/getShoppingCart", async function (data) {
-            console.log(data);
+
             let html = ``;
             let listProductOrder = data.data;
+            let sumPrice = 0;
+            for await (let productOrder of listProductOrder) {
 
-            for (let productOrder of listProductOrder) {
                 let tolPrice = productOrder.quantity * productOrder.unitPrice;
-                let test = numeral(tolPrice).format("0,0") + " đ";
+                sumPrice += tolPrice;
+                let tolPriceVal = numeral(tolPrice).format("0,0") + " đ";
+                let unitPriceVal = numeral(productOrder.unitPrice).format("0,0") + "đ";
                 html += `<tr>
                                 <td class="shoping__cart__item">
                                     <img src="${productOrder.image}" alt="" style="width:101px; height:100px">
                                     <h5>${productOrder.name}</h5>
                                 </td>
                                 <td class="shoping__cart__price">
-                                    ${productOrder.unitPrice}
+                                    ${unitPriceVal}
                                 </td>
                                 <td class="shoping__cart__quantity">
                                     <div class="quantity">
                                         <div class="pro-qty">
-                                            <input type="text" value="${productOrder.quantity}">
+                                            <input type="text" name="num-${productOrder._id}" value="${productOrder.quantity}">
                                         </div>
                                     </div>
                                 </td>
                                 <td class="shoping__cart__total">
-                                    ${test}đ
+                                    ${tolPriceVal}đ
                                 </td>
                                 <td class="shoping__cart__item__close">
-                                    <span class="icon_close"></span>
+                                    <span class="icon_close" onclick="removeShoppingCart('${productOrder._id}')" ></span>
                                 </td>
+                                <td>
+                                
+                                 </td>
                             </tr>
                             `
+                $("<input />").attr("type", "hidden")
+                    .attr("name", `${productOrder._id}`)
+                    .attr("value", `${productOrder.quantity}`).appendTo('#formUpdateProductOrder')
             }
             $('#tableProductOrder').html(html);
+            let sumPriceVal = numeral(sumPrice).format("0,0") + " đ";
+            $('#sumPrice').html(`Tổng tiền <span>${sumPriceVal}</span>`);
         })
     }
     loadShoppingCart()
+</script>
+<script>
+    function removeShoppingCart(idProductOrder) {
+
+        $.ajax({
+            url: `/api/shoppingCart/removeProductOder`,
+            method: 'PUT',
+            data: {
+                idProductOrder,
+            },
+            success: async function (result) {
+                console.log(result);
+                await loadShoppingCart();
+            }
+        })
+    }
+</script>
+<script>
+    async function updateListProductOder() {
+
+        let listProductOrder = await $("#formUpdateProductOrder").serializeArray();
+
+        for (let i = 0; i < listProductOrder.length; i++) {
+            let quantity = $(`[name='num-${listProductOrder[i].name}']`).val();
+            listProductOrder[i].value = quantity;
+
+        }
+        $.ajax({
+            url: `/api/shoppingCart/updateShoppingCart`,
+            method: 'PUT',
+            data: {
+                listProductOrder: listProductOrder,
+            },
+            success: async function (result) {
+                console.log(result);
+                await loadShoppingCart();
+            }
+        })
+
+    }
 </script>
 {{/section}}

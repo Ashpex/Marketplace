@@ -59,11 +59,13 @@
                     <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" value="1">
+                                <input id="numProductAddShopping" type="text" value="1">
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="primary-btn">Thêm vào giỏ hàng</a>
+                    <button onclick="addShoppingCart('{{this.idProduct}}')" class="primary-btn" style="border:aliceblue"
+                        data-toggle="modal" data-target="#notification">Thêm vào giỏ
+                        hàng</button>
                     <ul>
                         <li><b>Tình trạng</b> <span>Còn {{this.quantity}} sản phẩm</span></li>
                         <li><b>Thời gian giao hàng</b> <span>1 ngày <samp>Nhận miễn phí ngay hôm nay</samp></span></li>
@@ -184,6 +186,28 @@
         </div>
     </div>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="notification" tabindex="-1" role="dialog" aria-labelledby="notification-label"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notification-label">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="numProductWasAdded">
+                Đã thêm 1 sản phẩm vào giỏ hàng
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Related Product Section End -->
 
 {{#section 'script'}}
@@ -363,5 +387,28 @@
     }
     // Load product ratings
     loadRatings(1);
+</script>
+<script>
+    function addShoppingCart(idProduct) {
+        let numProductOder = $('#numProductAddShopping').val();
+        if (numProductOder <= 0) {
+            $('#numProductWasAdded').html(`Vui lòng thêm sản phẩm lớn hơn 1`);
+        } else {
+            $('#numProductWasAdded').html(`Đã thêm ${numProductOder} sản phẩm vào giỏ hàng`);
+            numProductOder = parseInt(numProductOder);
+            $.ajax({
+                url: `/api/shoppingCart/addShoppingCart`,
+                method: 'POST',
+                data: {
+                    idProduct,
+                    numProductOder,
+                },
+                success: function (idProduct) {
+
+                }
+            })
+
+        }
+    }
 </script>
 {{/section}}
