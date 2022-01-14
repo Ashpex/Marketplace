@@ -111,7 +111,7 @@ module.exports = {
       console.log(req.user);
     }
     return res.status(200).json({
-      result: "ok",
+      result: "Ok",
     });
   },
   getShoppingCart: async function (req, res) {
@@ -122,7 +122,7 @@ module.exports = {
         shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
       } else {
         return res.status(200).json({
-          result: "no product order",
+          result: "No product order found",
           data: [{}],
         });
       }
@@ -133,7 +133,7 @@ module.exports = {
       }
 
       return res.status(200).json({
-        result: "ok",
+        result: "Ok",
         data: listProductOrder,
       });
     } else {
@@ -146,7 +146,7 @@ module.exports = {
       }
 
       return res.status(200).json({
-        result: "ok",
+        result: "Ok",
         data: listProductOrder,
       });
     }
@@ -165,9 +165,9 @@ module.exports = {
           }
         );
         await ProductOrder.findOneAndDelete(idProductOrder);
-        res.status(200).json({ result: "successfully" });
+        res.status(200).json({ result: "Success" });
       } catch (error) {
-        res.status(400).json({ result: "failed" });
+        res.status(400).json({ result: "Failed" });
       }
     } else {
       try {
@@ -180,9 +180,9 @@ module.exports = {
           }
         );
         await ProductOrder.findOneAndDelete(idProductOrder);
-        res.status(200).json({ result: "successfully" });
+        res.status(200).json({ result: "Success" });
       } catch (error) {
-        res.status(400).json({ result: "failed" });
+        res.status(400).json({ result: "Failed" });
       }
     }
   },
@@ -196,9 +196,9 @@ module.exports = {
           quantity: parseInt(item.value),
         });
       }
-      res.status(200).json({ result: "successfully update shopping cart" });
+      res.status(200).json({ result: "Successfully update shopping cart" });
     } catch (error) {
-      res.status(400).json({ result: "failed update shopping cart" });
+      res.status(400).json({ result: "Failed to update shopping cart" });
     }
   },
 };
