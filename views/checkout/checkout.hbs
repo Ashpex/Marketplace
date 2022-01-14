@@ -29,14 +29,14 @@
         </div> --}}
         <div class="checkout__form">
             <h4>Hóa đơn chi tiết</h4>
-            <form action="#">
+            <form action="/checkout">
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="checkout__input">
                                     <p>Họ và tên <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" value="{{user.name}}">
                                 </div>
                             </div>
                             {{!-- <div class="col-lg-6">
@@ -52,7 +52,8 @@
                         </div> --}}
                         <div class="checkout__input">
                             <p>Địa chỉ<span>*</span></p>
-                            <input type="text" placeholder="Địa chỉ nhà" class="checkout__input__add">
+                            <input type="text" value="{{user.address}}" placeholder="Địa chỉ nhà"
+                                class="checkout__input__add">
                             {{!-- <input type="text" placeholder="Apartment, suite, unite ect (optinal)"> --}}
                         </div>
                         {{!-- <div class="checkout__input">
@@ -77,7 +78,7 @@
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>Email<span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" value="{{user.email}}">
                                 </div>
                             </div>
                         </div>
@@ -111,12 +112,13 @@
                             <h4>Đơn đặt hàng</h4>
                             <div class="checkout__order__products">Sản phẩm <span>Giá</span></div>
                             <ul>
-                                <li>Rau củ tổng hợp <span>80.000đ</span></li>
-                                <li>Trái cây <span>152.000đ</span></li>
-                                <li>Sữa tươi <span>53.000</span></li>
+                                {{#each listProductOrder}}
+                                <li>{{this.name}} <span>{{format this.sumPriceProduct}}</span></li>
+
+                                {{/each}}
                             </ul>
                             {{!-- <div class="checkout__order__subtotal">Subtotal <span>$750.99</span></div> --}}
-                            <div class="checkout__order__total">Tổng <span>285.000đ</span></div>
+                            <div class="checkout__order__total">Tổng <span>{{format sumPrice}}</span></div>
                             {{!-- <div class="checkout__input__checkbox">
                                 <label for="acc-or">
                                     Create an account?
