@@ -171,8 +171,8 @@ module.exports = {
 
     if (req.query.minPrice && req.query.maxPrice) {
       flag = true;
-      minPrice = req.param("minPrice").slice(0, req.query.minPrice.length - 2);
-      maxPrice = req.param("maxPrice").slice(0, req.query.maxPrice.length - 2);
+      minPrice = req.query.minPrice;
+      maxPrice = req.query.maxPrice;
     }
     if (flag) {
       products = await Product.find({
@@ -261,6 +261,8 @@ module.exports = {
       pagination: pagination,
       leftPage: leftPage,
       rightPage: rightPage,
+      minPrice,
+      maxPrice,
     });
   },
 };
