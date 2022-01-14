@@ -249,12 +249,14 @@
 {{#section 'script'}}
 <script>
     function addShoppingCart(idProduct) {
-        console.log(idProduct);
+        let numProductOder = 1;
+
         $.ajax({
             url: `/api/shoppingCart/addShoppingCart`,
             method: 'POST',
             data: {
                 idProduct,
+                numProductOder,
             },
             success: function (idProduct) {
                 console.log("xong");

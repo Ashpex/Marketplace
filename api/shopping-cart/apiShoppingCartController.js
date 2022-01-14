@@ -2,13 +2,15 @@ const Session = require("../../models/Session");
 const ShoppingCart = require("../../models/ShoppingCart");
 const ProductOrder = require("../../models/ProductOrder");
 const User = require("../../models/User");
+const Product = require("../../models/Product");
 
 module.exports = {
   addShoppingCart: async (req, res) => {
-    const { idProduct } = req.body;
+    const { idProduct, numProductOder } = req.body;
     console.log(idProduct);
     console.log(req.session.unauthId);
     //const newSession = new Session()
+    const product = await Product.findOne({ idProduct: idProduct });
     if (!req.user) {
       const session = await Session.findOne({ idUser: req.session.unauthId });
       const shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
@@ -21,7 +23,10 @@ module.exports = {
       if (id === null) {
         const productOrder = new ProductOrder({
           idProduct: idProduct,
-          quantity: 1,
+          image: product.image,
+          name: product.name,
+          unitPrice: product.price,
+          quantity: parseInt(numProductOder),
         });
         await productOrder.save((err, data) => {
           if (err) {
@@ -51,11 +56,9 @@ module.exports = {
         const productOrder = await ProductOrder.findById(id);
         let count = productOrder.quantity;
         await ProductOrder.findByIdAndUpdate(id, {
-          quantity: count + 1,
+          quantity: count + parseInt(numProductOder),
         });
       }
-
-      console.log(session);
     } else {
       const user = await User.findOne({ email: req.user.email });
       const shoppingCart = await ShoppingCart.findById(user.idShoppingCart);
@@ -69,7 +72,10 @@ module.exports = {
       if (id === null) {
         const productOrder = new ProductOrder({
           idProduct: idProduct,
-          quantity: 1,
+          image: product.image,
+          name: product.name,
+          unitPrice: product.price,
+          quantity: parseInt(numProductOder),
         });
         await productOrder.save((err, data) => {
           if (err) {
@@ -99,7 +105,7 @@ module.exports = {
         const productOrder = await ProductOrder.findById(id);
         let count = productOrder.quantity;
         await ProductOrder.findByIdAndUpdate(id, {
-          quantity: count + 1,
+          quantity: count + parseInt(numProductOder),
         });
       }
       console.log(req.user);
@@ -111,7 +117,15 @@ module.exports = {
   getShoppingCart: async function (req, res) {
     if (!req.user) {
       const session = await Session.findOne({ idUser: req.session.unauthId });
-      const shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
+      let shoppingCart;
+      if (session != null) {
+        shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
+      } else {
+        return res.status(200).json({
+          result: "no product order",
+          data: [{}],
+        });
+      }
       let listProductOrder = [];
       for await (let idProductOrder of shoppingCart.listProductOrder) {
         let productOrder = await ProductOrder.findById(idProductOrder);
@@ -123,10 +137,75 @@ module.exports = {
         data: listProductOrder,
       });
     } else {
+      const user = await User.findOne({ email: req.user.email });
+      const shoppingCartUser = await ShoppingCart.findById(user.idShoppingCart);
+      let listProductOrder = [];
+      for await (let idProductOrder of shoppingCartUser.listProductOrder) {
+        let productOrder = await ProductOrder.findById(idProductOrder);
+        listProductOrder.push(productOrder);
+      }
+
+      return res.status(200).json({
+        result: "ok",
+        data: listProductOrder,
+      });
+    }
+  },
+  putRemoveProductOder: async (req, res) => {
+    const { idProductOrder } = req.body;
+    if (!req.user) {
+      try {
+        const session = await Session.findOne({ idUser: req.session.unauthId });
+        const shoppingCart = await ShoppingCart.findByIdAndUpdate(
+          session.idShoppingCart,
+          {
+            $pull: {
+              listProductOrder: idProductOrder,
+            },
+          }
+        );
+        await ProductOrder.findOneAndDelete(idProductOrder);
+        res.status(200).json({ result: "successfully" });
+      } catch (error) {
+        res.status(400).json({ result: "failed" });
+      }
+    } else {
+      try {
+        const shoppingCart = await ShoppingCart.findOneAndUpdate(
+          req.user.email,
+          {
+            $pull: {
+              listProductOrder: idProductOrder,
+            },
+          }
+        );
+        await ProductOrder.findOneAndDelete(idProductOrder);
+        res.status(200).json({ result: "successfully" });
+      } catch (error) {
+        res.status(400).json({ result: "failed" });
+      }
+    }
+  },
+  putUpdateShoppingCart: async (req, res) => {
+    console.log(req.body);
+    const { listProductOrder } = req.body;
+    console.log(listProductOrder);
+    try {
+      for await (let item of listProductOrder) {
+        await ProductOrder.findByIdAndUpdate(item.name, {
+          quantity: parseInt(item.value),
+        });
+      }
+      res.status(200).json({ result: "successfully update shopping cart" });
+    } catch (error) {
+      res.status(400).json({ result: "failed update shopping cart" });
     }
   },
 };
 function containsProduct(idProduct, list) {
+  if (list.length <= 0) {
+    return null;
+  }
   for (let item of list) {
     if (item.idProduct === idProduct) {
       return item._id;
