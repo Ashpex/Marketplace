@@ -732,7 +732,7 @@ ol {
   justify-content: center;
 }
 
-.hero__search__cart__icon a{
+.hero__search__cart__icon a {
   color: #7fad39;
 }
 
@@ -750,7 +750,6 @@ ol {
   font-size: 14px;
   color: #6f6f6f;
 }
-
 
 .hero__search__phone {
   float: right;
@@ -772,7 +771,7 @@ ol {
   justify-content: center;
 }
 
-.hero__search__phone__icon a{
+.hero__search__phone__icon a {
   color: #7fad39;
 }
 
@@ -2211,7 +2210,7 @@ ol {
   border: 1px solid #ebebeb;
   padding-left: 20px;
   font-size: 16px;
-  color: #b2b2b2;
+  color: #070606;
   border-radius: 4px;
 }
 

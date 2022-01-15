@@ -167,12 +167,14 @@ module.exports = {
         await ProductOrder.findByIdAndDelete(idProductOrder);
         res.status(200).json({ result: "Success" });
       } catch (error) {
+        console.log(error);
         res.status(400).json({ result: "Failed" });
       }
     } else {
       try {
-        const shoppingCart = await ShoppingCart.findOneAndUpdate(
-          req.user.email,
+        const user = await User.findOne({ email: req.user.email });
+        const shoppingCart = await ShoppingCart.findByIdAndUpdate(
+          user.idShoppingCart,
           {
             $pull: {
               listProductOrder: idProductOrder,
@@ -182,6 +184,7 @@ module.exports = {
         await ProductOrder.findByIdAndDelete(idProductOrder);
         res.status(200).json({ result: "Success" });
       } catch (error) {
+        console.log(error);
         res.status(400).json({ result: "Failed" });
       }
     }
