@@ -7,6 +7,8 @@ const User = require("../models/User");
 const SendmailController = require("../controller/SendmailController");
 const Session = require("../models/Session");
 const ShoppingCart = require("../models/ShoppingCart");
+const CheckOut = require("../models/CheckOut");
+const ProductOrder = require("../models/ProductOrder");
 
 module.exports = {
   getLogin: (req, res, next) => {
@@ -31,7 +33,6 @@ module.exports = {
       });
       shoppingCart.save(async (err, data) => {
         if (err) {
-          console.log("hihi");
           console.log(err);
           res.render("errors/500", { error: err });
         } else {
@@ -41,7 +42,6 @@ module.exports = {
           });
           newSession.save((err) => {
             if (err) {
-              console.log("hihi1");
               console.log(err);
               res.render("errors/500", { error: err });
             }
@@ -160,13 +160,14 @@ module.exports = {
         "Chúc mừng bạn đã đăng ký thành công trên AshStore! Bạn vui lòng xác nhận email đăng ký bằng cách nhấn vào đường link sau:" +
           "<br>" +
           "<p>" +
-          `${process.env.CLIENT_URL}/email-activate/${token}` +
+          `${req.protocol}://${req.get("host")}/email-activate/${token}` +
           "<p>" +
           "<br>" +
           `Email: ${req.body.email}` +
           "<br>" +
           `Mật khẩu: ${req.body.password}`
       );
+
       res.render("login/login", {
         layout: false,
         message:
@@ -181,10 +182,58 @@ module.exports = {
       return;
     }
     const user = await User.findOne({ email: req.user.email });
+    let checkOutUserAll = await CheckOut.find({ email: req.user.email }).lean();
 
+    for (let i = 0; i < checkOutUserAll.length; i++) {
+      const shoppingCartUser = await ShoppingCart.findById(
+        checkOutUserAll[i].idShoppingCart
+      ).lean();
+      checkOutUserAll[i].listProductOrder = [];
+
+      let sum = 0;
+      for (let j = 0; j < shoppingCartUser.listProductOrder.length; j++) {
+        const productOrder = await ProductOrder.findById(
+          shoppingCartUser.listProductOrder[j]
+        ).lean();
+
+        sum += productOrder.unitPrice * productOrder.quantity;
+        checkOutUserAll[i].listProductOrder.push(productOrder);
+      }
+      checkOutUserAll[i].total = sum;
+    }
+    let checkOutPending = [];
+    checkOutUserAll.map((item) => {
+      if (item.status == "Pending") {
+        checkOutPending.push(item);
+      }
+    });
+    let checkOutDelivering = [];
+    checkOutUserAll.map((item) => {
+      if (item.status == "Delivering") {
+        checkOutDelivering.push(item);
+      }
+    });
+    let checkOutDelivered = [];
+    checkOutUserAll.map((item) => {
+      if (item.status == "Delivered") {
+        checkOutDelivered.push(item);
+      }
+    });
+    let checkOutCanceled = [];
+    checkOutUserAll.map((item) => {
+      if (item.status == "Canceled") {
+        checkOutCanceled.push(item);
+      }
+    });
+    console.log(checkOutUserAll);
     res.render("my-account/my-account", {
       layout: false,
       user: utils.mongooseToObject(user),
+      checkOutUserAll: checkOutUserAll,
+      checkOutPending: checkOutPending,
+      checkOutDelivering: checkOutDelivering,
+      checkOutDelivered: checkOutDelivered,
+      checkOutCanceled: checkOutCanceled,
     });
   },
   getMyAccountEdit: async (req, res, next) => {
@@ -282,7 +331,9 @@ module.exports = {
     const result = SendmailController.sendMail(
       req.body.email,
       "Lấy lại mật khẩu",
-      `Click vào link sau để đặt lại mật khẩu: http://localhost:5000/reset-password/${user._id}`
+      `Click vào link sau để đặt lại mật khẩu: ${req.protocol}://${req.get(
+        "host"
+      )}/reset-password/${user._id}`
     );
 
     res.render("forgot-password/forgot-password", {
@@ -291,7 +342,6 @@ module.exports = {
     });
   },
   getResetPassword: async (req, res, next) => {
-    console.log(req.params.id);
     const user = await User.findById(req.params.id);
     if (!user) {
       res.render("errors/404");
@@ -326,5 +376,18 @@ module.exports = {
         console.log(err);
         res.render("errors/404", { layout: false });
       });
+  },
+  getCancelCheckOut: async (req, res) => {
+    if (!req.user) {
+      res.redirect("/login");
+      return;
+    }
+    const { idCheckOut } = req.params;
+    try {
+      await CheckOut.findByIdAndUpdate(idCheckOut, { status: "Canceled" });
+      return res.redirect("/myaccount");
+    } catch (error) {
+      return res.redirect("/myaccount?error=errorCheckOut");
+    }
   },
 };
