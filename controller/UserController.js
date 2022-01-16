@@ -160,13 +160,14 @@ module.exports = {
         "Chúc mừng bạn đã đăng ký thành công trên AshStore! Bạn vui lòng xác nhận email đăng ký bằng cách nhấn vào đường link sau:" +
           "<br>" +
           "<p>" +
-          `${process.env.CLIENT_URL}/email-activate/${token}` +
+          `${req.protocol}://${req.get("host")}/email-activate/${token}` +
           "<p>" +
           "<br>" +
           `Email: ${req.body.email}` +
           "<br>" +
           `Mật khẩu: ${req.body.password}`
       );
+
       res.render("login/login", {
         layout: false,
         message:
@@ -330,7 +331,9 @@ module.exports = {
     const result = SendmailController.sendMail(
       req.body.email,
       "Lấy lại mật khẩu",
-      `Click vào link sau để đặt lại mật khẩu: http://localhost:5000/reset-password/${user._id}`
+      `Click vào link sau để đặt lại mật khẩu: ${req.protocol}://${req.get(
+        "host"
+      )}/reset-password/${user._id}`
     );
 
     res.render("forgot-password/forgot-password", {
