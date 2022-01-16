@@ -219,7 +219,7 @@
                                                 {{/each}}
                                             </div>
                                         </td>
-                                        <td>{{this.total}}</td>
+                                        <td>{{format this.total}}</td>
                                         <td>
                                             {{#ifCond this.status "==" "Pending"}}
                                             <span>Đang xử lý</span>
@@ -242,7 +242,7 @@
 
                                                 <div class="col-6 text-center">
                                                     <a onclick="return confirm('Bạn có muốn hủy đơn hàng không')"
-                                                        href="#">
+                                                        href="/myaccount/cancel-order/{{../this._id}}">
                                                         <i class="fas fa-trash" title="Hủy đơn hàng"
                                                             style="color: red;"></i>
                                                     </a>
@@ -292,7 +292,7 @@
                                                 {{/each}}
                                             </div>
                                         </td>
-                                        <td>{{this.total}}</td>
+                                        <td>{{format this.total}}</td>
                                         <td>
                                             {{#ifCond this.status "==" "Pending"}}
                                             <span>Đang xử lý</span>
@@ -366,7 +366,7 @@
                                                 {{/each}}
                                             </div>
                                         </td>
-                                        <td>{{this.total}}</td>
+                                        <td>{{format this.total}}</td>
                                         <td>
                                             {{#ifCond this.status "==" "Pending"}}
                                             <span>Đang xử lý</span>
@@ -438,7 +438,7 @@
                                                 {{/each}}
                                             </div>
                                         </td>
-                                        <td>{{this.total}}</td>
+                                        <td>{{format this.total}}</td>
                                         <td>
                                             {{#ifCond this.status "==" "Pending"}}
                                             <span>Đang xử lý</span>
@@ -509,7 +509,7 @@
                                             {{/each}}
                                         </div>
                                     </td>
-                                    <td>{{this.total}}</td>
+                                    <td>{{format this.total}}</td>
                                     <td>
                                         {{#ifCond this.status "==" "Pending"}}
                                         <span>Đang xử lý</span>

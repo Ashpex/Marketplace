@@ -224,7 +224,7 @@ module.exports = {
         checkOutCanceled.push(item);
       }
     });
-
+    console.log(checkOutUserAll);
     res.render("my-account/my-account", {
       layout: false,
       user: utils.mongooseToObject(user),
@@ -373,5 +373,18 @@ module.exports = {
         console.log(err);
         res.render("errors/404", { layout: false });
       });
+  },
+  getCancelCheckOut: async (req, res) => {
+    if (!req.user) {
+      res.redirect("/login");
+      return;
+    }
+    const { idCheckOut } = req.params;
+    try {
+      await CheckOut.findByIdAndUpdate(idCheckOut, { status: "Canceled" });
+      return res.redirect("/myaccount");
+    } catch (error) {
+      return res.redirect("/myaccount?error=errorCheckOut");
+    }
   },
 };

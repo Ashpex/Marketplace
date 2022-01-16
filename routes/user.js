@@ -43,6 +43,11 @@ router.get("/myaccount/changePassword", UserController.getChangePassword);
 
 router.post("/myaccount/changePassword", UserController.postChangePassword);
 
+router.get(
+  "/myaccount/cancel-order/:idCheckOut",
+  UserController.getCancelCheckOut
+);
+
 router.get("/", function (req, res) {
   res.redirect("/home");
 });
