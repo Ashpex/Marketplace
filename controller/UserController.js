@@ -7,6 +7,8 @@ const User = require("../models/User");
 const SendmailController = require("../controller/SendmailController");
 const Session = require("../models/Session");
 const ShoppingCart = require("../models/ShoppingCart");
+const CheckOut = require("../models/CheckOut");
+const ProductOrder = require("../models/ProductOrder");
 
 module.exports = {
   getLogin: (req, res, next) => {
@@ -31,7 +33,6 @@ module.exports = {
       });
       shoppingCart.save(async (err, data) => {
         if (err) {
-          console.log("hihi");
           console.log(err);
           res.render("errors/500", { error: err });
         } else {
@@ -41,7 +42,6 @@ module.exports = {
           });
           newSession.save((err) => {
             if (err) {
-              console.log("hihi1");
               console.log(err);
               res.render("errors/500", { error: err });
             }
@@ -181,10 +181,58 @@ module.exports = {
       return;
     }
     const user = await User.findOne({ email: req.user.email });
+    let checkOutUserAll = await CheckOut.find({ email: req.user.email }).lean();
+
+    for (let i = 0; i < checkOutUserAll.length; i++) {
+      const shoppingCartUser = await ShoppingCart.findById(
+        checkOutUserAll[i].idShoppingCart
+      ).lean();
+      checkOutUserAll[i].listProductOrder = [];
+
+      let sum = 0;
+      for (let j = 0; j < shoppingCartUser.listProductOrder.length; j++) {
+        const productOrder = await ProductOrder.findById(
+          shoppingCartUser.listProductOrder[j]
+        ).lean();
+
+        sum += productOrder.unitPrice * productOrder.quantity;
+        checkOutUserAll[i].listProductOrder.push(productOrder);
+      }
+      checkOutUserAll[i].total = sum;
+    }
+    let checkOutPending = [];
+    checkOutUserAll.map((item) => {
+      if (item.status == "Pending") {
+        checkOutPending.push(item);
+      }
+    });
+    let checkOutDelivering = [];
+    checkOutUserAll.map((item) => {
+      if (item.status == "Delivering") {
+        checkOutDelivering.push(item);
+      }
+    });
+    let checkOutDelivered = [];
+    checkOutUserAll.map((item) => {
+      if (item.status == "Delivered") {
+        checkOutDelivered.push(item);
+      }
+    });
+    let checkOutCanceled = [];
+    checkOutUserAll.map((item) => {
+      if (item.status == "Canceled") {
+        checkOutCanceled.push(item);
+      }
+    });
 
     res.render("my-account/my-account", {
       layout: false,
       user: utils.mongooseToObject(user),
+      checkOutUserAll: checkOutUserAll,
+      checkOutPending: checkOutPending,
+      checkOutDelivering: checkOutDelivering,
+      checkOutDelivered: checkOutDelivered,
+      checkOutCanceled: checkOutCanceled,
     });
   },
   getMyAccountEdit: async (req, res, next) => {
@@ -291,7 +339,6 @@ module.exports = {
     });
   },
   getResetPassword: async (req, res, next) => {
-    console.log(req.params.id);
     const user = await User.findById(req.params.id);
     if (!user) {
       res.render("errors/404");
