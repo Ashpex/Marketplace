@@ -2,6 +2,7 @@ const ShoppingCart = require("../models/ShoppingCart");
 const ProductOrder = require("../models/ProductOrder");
 const User = require("../models/User");
 const Product = require("../models/Product");
+const CheckOut = require("../models/CheckOut");
 
 module.exports = {
   getIndex: async (req, res) => {
@@ -15,17 +16,84 @@ module.exports = {
     let sumPrice = 0;
     for await (let idProductOrder of shoppingCart.listProductOrder) {
       let productOrder = await ProductOrder.findById(idProductOrder).lean();
-      console.log(productOrder);
+
       productOrder.sumPriceProduct =
         productOrder.quantity * productOrder.unitPrice;
       sumPrice += productOrder.sumPriceProduct;
       listProductOrder.push(productOrder);
     }
-    console.log(listProductOrder);
+
+    const errorNumberPhone = req.query.error;
+    const errorListProduct = req.query.errorListProduct;
+    console.log(errorListProduct);
     res.render("checkout/checkout", {
       listProductOrder: listProductOrder,
       sumPrice: sumPrice,
+      errorNumberPhone: errorNumberPhone,
+      errorListProduct: errorListProduct,
     });
   },
-  postCheckOut: async (req, res) => {},
+  postCheckOut: async (req, res) => {
+    const { numberPhone, emailUser, note } = req.body;
+    console.log(numberPhone);
+    console.log(emailUser);
+    console.log(note);
+    console.log(req.body);
+    if (!numberPhone || !validate(numberPhone)) {
+      res.redirect("/checkout?error=numberPhone");
+      return;
+    }
+
+    const user = await User.findOne({ email: req.user.email });
+    console.log(user);
+    console.log(req.user.email);
+    const shoppingCartUser = await ShoppingCart.findById(user.idShoppingCart);
+    if (shoppingCartUser.listProductOrder.length <= 0) {
+      res.redirect("/checkout?errorListProduct=errorListProduct");
+      return;
+    }
+    const newCheckOut = new CheckOut({
+      email: req.user.email,
+      numberPhone: numberPhone,
+      idShoppingCart: user.idShoppingCart,
+      note: note,
+      status: "Pending",
+    });
+
+    await newCheckOut.save((err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+    const newShoppingCart = await new ShoppingCart({
+      listProductOrder: [],
+      status: false,
+      purchasedTime: new Date().toLocaleString(),
+    });
+    await newShoppingCart.save(async (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        try {
+          await User.findOneAndUpdate(
+            { email: req.user.email },
+            {
+              idShoppingCart: data._id,
+              $addToSet: {
+                listIdShoppingCartHistory: user.idShoppingCart,
+              },
+            }
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+
+    return res.redirect("/home");
+  },
 };
+function validate(phone) {
+  const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  return regex.test(phone);
+}
