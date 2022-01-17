@@ -182,7 +182,9 @@ module.exports = {
       return;
     }
     const user = await User.findOne({ email: req.user.email });
-    let checkOutUserAll = await CheckOut.find({ email: req.user.email }).lean();
+    let checkOutUserAll = await CheckOut.find({
+      email: req.user.email,
+    }).lean();
 
     for (let i = 0; i < checkOutUserAll.length; i++) {
       const shoppingCartUser = await ShoppingCart.findById(
@@ -225,7 +227,6 @@ module.exports = {
         checkOutCanceled.push(item);
       }
     });
-    console.log(checkOutUserAll);
     res.render("my-account/my-account", {
       layout: false,
       user: utils.mongooseToObject(user),
@@ -384,7 +385,24 @@ module.exports = {
     }
     const { idCheckOut } = req.params;
     try {
-      await CheckOut.findByIdAndUpdate(idCheckOut, { status: "Canceled" });
+      await CheckOut.findByIdAndUpdate(idCheckOut, {
+        status: "Canceled",
+      });
+      return res.redirect("/myaccount");
+    } catch (error) {
+      return res.redirect("/myaccount?error=errorCheckOut");
+    }
+  },
+  getConfirmCheckOut: async (req, res) => {
+    if (!req.user) {
+      res.redirect("/login");
+      return;
+    }
+    const { idCheckOut } = req.params;
+    try {
+      await CheckOut.findByIdAndUpdate(idCheckOut, {
+        status: "Delivered",
+      });
       return res.redirect("/myaccount");
     } catch (error) {
       return res.redirect("/myaccount?error=errorCheckOut");
