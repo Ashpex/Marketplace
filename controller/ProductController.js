@@ -22,17 +22,17 @@ module.exports = {
     let sizePage = Math.max(parseInt(size / perPage + 1));
 
     let categories = await Category.find({});
-    var leftPage = await utilsPagination.getLeftPage(
+    let leftPage = await utilsPagination.getLeftPage(
       "/shop-grid",
       page,
       sizePage
     );
-    var pagination = await utilsPagination.getPagination(
+    let pagination = await utilsPagination.getPagination(
       "/shop-grid",
       page,
       sizePage
     );
-    var rightPage = await utilsPagination.getRightPage(
+    let rightPage = await utilsPagination.getRightPage(
       "/shop-grid",
       page,
       sizePage
@@ -80,7 +80,6 @@ module.exports = {
     });
 
     let sizePage = Math.max(parseInt(size / perPage + 1));
-    console.log(sizePage);
     let categories = await Category.find({});
 
     let leftPage = await utilsPagination.getLeftPage(
@@ -186,7 +185,6 @@ module.exports = {
         price: { $gte: minPrice, $lte: maxPrice },
       });
       sizePage = Math.max(parseInt(size / perPage + 1));
-      console.log(sizePage);
       leftPage = await utilsPagination.getLeftPageSearch(
         "/shop-grid/search?name=" +
           req.param("name") +
@@ -227,7 +225,6 @@ module.exports = {
         name: { $regex: name, $options: "i" },
       });
       sizePage = Math.max(parseInt(size / perPage + 1));
-      console.log(sizePage);
       leftPage = await utilsPagination.getLeftPageSearch(
         "/shop-grid/search?name=" + req.param("name"),
         page,

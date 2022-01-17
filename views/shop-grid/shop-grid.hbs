@@ -124,9 +124,9 @@
                                     <div class="product__discount__item__text">
                                         <span>{{this.category}}</span>
                                         <h5><a href="/shop-grid/{{this.url}}">{{this.name}}</a></h5>
-                                        <div class="product__item__price">{{format this.price}} 
+                                        <div class="product__item__price">{{format this.price}}
                                             <span>
-                                                {{math this.price "*" 1.2}}                                                
+                                                {{ format (math this.price "*" 1.2)}}
                                             </span>
                                         </div>
                                     </div>
@@ -158,22 +158,22 @@
                     <div class="row list-product">
 
                         {{#each products}}
-                            <div class="col-lg-4 col-md-6 col-sm-6 item-product">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{this.image}}">
-                                        <ul class="product__item__pic__hover">
-                                            <li style="cursor: pointer;"><a id="addCart-{{this.idProduct}}"
-                                                    onclick="addShoppingCart('{{this.idProduct}}')"
-                                                    value="{{this.idProduct}}" data-toggle="modal"
-                                                    data-target="#notification"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6><a href="/shop-grid/{{this.url}}">{{this.name}}</a></h6>
-                                        <h5 id="price-{{@index}}">{{format this.price}}</h5>
-                                    </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 item-product">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="{{this.image}}">
+                                    <ul class="product__item__pic__hover">
+                                        <li style="cursor: pointer;"><a id="addCart-{{this.idProduct}}"
+                                                onclick="addShoppingCart('{{this.idProduct}}')"
+                                                value="{{this.idProduct}}" data-toggle="modal"
+                                                data-target="#notification"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="/shop-grid/{{this.url}}">{{this.name}}</a></h6>
+                                    <h5 id="price-{{@index}}">{{format this.price}}</h5>
                                 </div>
                             </div>
+                        </div>
                         {{/each}}
 
                     </div>
@@ -265,84 +265,85 @@
         })
     }
 </script>
+
 {{/section}}
 
 {{#section 'slider_script'}}
-    <script>
-        let minPrice = $('#hidden-min-price').val();
-        let maxPrice = $('#hidden-max-price').val();
-        if (minPrice != 0 && maxPrice != 0) {
-            $(".price-range").slider('values',0,minPrice);
-            $(".price-range").slider('values',1,maxPrice);
-            const formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'VND',
-                minimumFractionDigits: 0
-            })
-            minPrice = formatter.format(minPrice);
-            maxPrice = formatter.format(maxPrice);
-            $("#minamount").val(minPrice);
-            $("#maxamount").val(maxPrice);
-        } 
+<script>
+    let minPrice = $('#hidden-min-price').val();
+    let maxPrice = $('#hidden-max-price').val();
+    if (minPrice != 0 && maxPrice != 0) {
+        $(".price-range").slider('values', 0, minPrice);
+        $(".price-range").slider('values', 1, maxPrice);
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0
+        })
+        minPrice = formatter.format(minPrice);
+        maxPrice = formatter.format(maxPrice);
+        $("#minamount").val(minPrice);
+        $("#maxamount").val(maxPrice);
+    }
 
-        $("#btn-search-slider").on("click", function () {
-            let minPrice = $('#minamount').val();
-            let maxPrice = $('#maxamount').val();
+    $("#btn-search-slider").on("click", function () {
+        let minPrice = $('#minamount').val();
+        let maxPrice = $('#maxamount').val();
 
-            minPrice = minPrice.slice(1, minPrice.length);
-            maxPrice = maxPrice.slice(1, maxPrice.length);
+        minPrice = minPrice.slice(1, minPrice.length);
+        maxPrice = maxPrice.slice(1, maxPrice.length);
 
-            minPrice = parseFloat(minPrice.replace(/,/g, ""));
-            maxPrice = parseFloat(maxPrice.replace(/,/g, ""));
-            $("#minamount").val(minPrice);
-            $("#maxamount").val(maxPrice);
-            $("#slider-search-form").submit();
-        });
-    </script>    
+        minPrice = parseFloat(minPrice.replace(/,/g, ""));
+        maxPrice = parseFloat(maxPrice.replace(/,/g, ""));
+        $("#minamount").val(minPrice);
+        $("#maxamount").val(maxPrice);
+        $("#slider-search-form").submit();
+    });
+</script>
 {{/section}}
 
 {{#section 'sort_by_price'}}
-    <script>
-        const originalHtml = $(".list-product").html();
-        
-        const products = $(".item-product");
-        const length = products.length;
-        const listPrice = [];
-        for (let i = 0; i < length; i++) {
-            const product = products[i];
-            let price = $("#price-" + i).html();
-            price = price.slice(0, price.length - 1);
-            price = parseFloat(price.replace(/,/g, ""));
-            listPrice.push({
-                product,
-                price
+<script>
+    const originalHtml = $(".list-product").html();
+
+    const products = $(".item-product");
+    const length = products.length;
+    const listPrice = [];
+    for (let i = 0; i < length; i++) {
+        const product = products[i];
+        let price = $("#price-" + i).html();
+        price = price.slice(0, price.length - 1);
+        price = parseFloat(price.replace(/,/g, ""));
+        listPrice.push({
+            product,
+            price
+        });
+    }
+
+    $("#sort-price").on("change", function () {
+        let sortPrice = $(this).val();
+
+        if (sortPrice == 1) {
+            listPrice.sort(function (a, b) {
+                return a.price - b.price;
             });
+        } else if (sortPrice == -1) {
+            listPrice.sort(function (a, b) {
+                return b.price - a.price;
+            });
+        } else if (sortPrice == 0) {
+            $(".list-product").empty();
+            $(".list-product").html(originalHtml);
+            return;
         }
 
-        $("#sort-price").on("change", function () {
-            let sortPrice = $(this).val();
-            
-            if (sortPrice == 1) {
-                listPrice.sort(function (a, b) {
-                    return a.price - b.price;
-                });
-            } else if (sortPrice == -1) {
-                listPrice.sort(function (a, b) {
-                    return b.price - a.price;
-                });
-            } else if (sortPrice == 0) {
-                $(".list-product").empty();
-                $(".list-product").html(originalHtml);
-                return;
-            }
+        let html = "";
+        for (let i = 0; i < length; i++) {
+            html += listPrice[i].product.outerHTML;
+        }
+        $(".list-product").empty();
+        $(".list-product").html(html);
+    });
 
-            let html = "";
-            for (let i = 0; i < length; i++) {
-                html += listPrice[i].product.outerHTML;
-            }
-            $(".list-product").empty();
-            $(".list-product").html(html);
-        });
-        
-    </script>
+</script>
 {{/section}}
