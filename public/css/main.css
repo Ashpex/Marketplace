@@ -1,16 +1,11 @@
 .center {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .align-right {
-    display: flex !important;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-#my-table {
-    overflow: hidden;
-    word-wrap: normal, break-word;
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
 }

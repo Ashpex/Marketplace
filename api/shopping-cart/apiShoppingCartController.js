@@ -7,12 +7,12 @@ const Product = require("../../models/Product");
 module.exports = {
   addShoppingCart: async (req, res) => {
     const { idProduct, numProductOder } = req.body;
+    console.log(idProduct);
+    console.log(req.session.unauthId);
     //const newSession = new Session()
     const product = await Product.findOne({ idProduct: idProduct });
     if (!req.user) {
-      const session = await Session.findOne({
-        idUser: req.session.unauthId,
-      });
+      const session = await Session.findOne({ idUser: req.session.unauthId });
       const shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
       let listProductOrder = [];
       for await (let idProductOrder of shoppingCart.listProductOrder) {
@@ -33,6 +33,8 @@ module.exports = {
             console.log(err);
             return res.status(500).json({ result: "failed", message: err });
           } else {
+            console.log(data);
+            console.log(shoppingCart);
             ShoppingCart.findByIdAndUpdate(
               shoppingCart._id,
               {
@@ -40,11 +42,11 @@ module.exports = {
                   listProductOrder: data._id,
                 },
               },
-              (err, data2) => {
+              (err, hihi) => {
                 if (err) {
                   console.log(err);
                 } else {
-                  console.log(data2);
+                  console.log(hihi);
                 }
               }
             );
@@ -80,6 +82,8 @@ module.exports = {
             console.log(err);
             return res.status(500).json({ result: "failed", message: err });
           } else {
+            console.log(data);
+            console.log(shoppingCart);
             ShoppingCart.findByIdAndUpdate(
               shoppingCart._id,
               {
@@ -87,11 +91,11 @@ module.exports = {
                   listProductOrder: data._id,
                 },
               },
-              (err, data2) => {
+              (err, hihi) => {
                 if (err) {
                   console.log(err);
                 } else {
-                  console.log(data2);
+                  console.log(hihi);
                 }
               }
             );
@@ -104,6 +108,7 @@ module.exports = {
           quantity: count + parseInt(numProductOder),
         });
       }
+      console.log(req.user);
     }
     return res.status(200).json({
       result: "Ok",
@@ -111,9 +116,7 @@ module.exports = {
   },
   getShoppingCart: async function (req, res) {
     if (!req.user) {
-      const session = await Session.findOne({
-        idUser: req.session.unauthId,
-      });
+      const session = await Session.findOne({ idUser: req.session.unauthId });
       let shoppingCart;
       if (session != null) {
         shoppingCart = await ShoppingCart.findById(session.idShoppingCart);
@@ -152,9 +155,7 @@ module.exports = {
     const { idProductOrder } = req.body;
     if (!req.user) {
       try {
-        const session = await Session.findOne({
-          idUser: req.session.unauthId,
-        });
+        const session = await Session.findOne({ idUser: req.session.unauthId });
         const shoppingCart = await ShoppingCart.findByIdAndUpdate(
           session.idShoppingCart,
           {
@@ -189,16 +190,16 @@ module.exports = {
     }
   },
   putUpdateShoppingCart: async (req, res) => {
+    console.log(req.body);
     const { listProductOrder } = req.body;
+    console.log(listProductOrder);
     try {
       for await (let item of listProductOrder) {
         await ProductOrder.findByIdAndUpdate(item.name, {
           quantity: parseInt(item.value),
         });
       }
-      res.status(200).json({
-        result: "Successfully update shopping cart",
-      });
+      res.status(200).json({ result: "Successfully update shopping cart" });
     } catch (error) {
       res.status(400).json({ result: "Failed to update shopping cart" });
     }
@@ -208,6 +209,7 @@ function containsProduct(idProduct, list) {
   if (list.length <= 0) {
     return null;
   }
+  console.log(list);
   for (let item of list) {
     if (item.idProduct === idProduct) {
       return item._id;

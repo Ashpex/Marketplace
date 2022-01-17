@@ -1,80 +1,138 @@
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel='shortcut icon' type="image/png" href='/img/title/icon-shop.png' />
-  <title>Đăng Kí</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Đăng Kí</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
-  <!-- Font Icon -->
-  <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css" />
+    <!-- Font Icon -->
+    <link
+      rel="stylesheet"
+      href="fonts/material-icon/css/material-design-iconic-font.min.css"
+    />
 
-  <!-- Main css -->
-  <link rel="stylesheet" href="/css/style_register.css" />
+    <!-- Main css -->
+    <link rel="stylesheet" href="/css/style_register.css" />
 
-</head>
+  </head>
 
-<body>
+  <body>
 
-  <div class="main">
-    <section class="signup">
+    <div class="main">
+      <section class="signup">
 
-      <div class="container">
-        <div class="signup-content" style="border-radius: 15px;">
-          <form method="POST" id="signup-form" class="signup-form">
-            <h2 class="form-title">Tạo Tài Khoản</h2>
+        <div class="container">
+          <div class="signup-content" style="border-radius: 15px;">
+            <form method="POST" id="signup-form" class="signup-form">
+              <h2 class="form-title">Tạo Tài Khoản</h2>
 
-            {{#if error}}
-            {{! alert error }}
-            <div class="alert alert-danger">
-              {{error}}
-            </div>
-            {{/if}}
+              {{#if error}}
+                {{! alert error }}
+                <div class="alert alert-danger">
+                  {{error}}
+                </div>
+              {{/if}}
 
-            <div class="form-group">
-              <input type="text" class="form-input" name="name" id="name" placeholder="Họ Và Tên" required />
-            </div>
-            <div class="form-group">
-              <input type="email" class="form-input" name="email" id="email" placeholder="Email" required />
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-input" name="address" id="address" placeholder="Địa Chỉ" required />
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-input" name="password" id="password" placeholder="Mật Khẩu" required />
-              <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
-            </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-input"
+                  name="name"
+                  id="name"
+                  placeholder="Họ Và Tên"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="email"
+                  class="form-input"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-input"
+                  name="address"
+                  id="address"
+                  placeholder="Địa Chỉ"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-input"
+                  name="password"
+                  id="password"
+                  placeholder="Mật Khẩu"
+                  required
+                />
+                <span
+                  toggle="#password"
+                  class="zmdi zmdi-eye field-icon toggle-password"
+                ></span>
+              </div>
 
-            <div class="form-group">
-              <input type="password" class="form-input" name="re_password" id="re_password"
-                placeholder="Nhập Lại Mật Khẩu" required />
-              <span toggle="#re-password" class="zmdi zmdi-eye field-icon re-toggle-password"></span>
-            </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-input"
+                  name="re_password"
+                  id="re_password"
+                  placeholder="Nhập Lại Mật Khẩu"
+                  required
+                />
+                <span
+                  toggle="#re-password"
+                  class="zmdi zmdi-eye field-icon re-toggle-password"
+                ></span>
+              </div>
 
-            <div class="form-group">
-              <input style="cursor: pointer;" type="submit" name="submit" id="submit" class="form-submit"
-                value="Đăng Kí" />
-            </div>
-          </form>
-          <p class="loginhere">
-            Đã Có Tài Khoản ?
-            <a href="/login" class="loginhere-link">Đăng Nhập</a>
-          </p>
+              <div class="form-group">
+                <input
+                  style="cursor: pointer;"
+                  type="submit"
+                  name="submit"
+                  id="submit"
+                  class="form-submit"
+                  value="Đăng Kí"
+                />
+              </div>
+            </form>
+            <p class="loginhere">
+              Đã Có Tài Khoản ?
+              <a href="/login" class="loginhere-link">Đăng Nhập</a>
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
 
-  <!-- JS -->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/js/main_register.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- JS -->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/js/main_register.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    ></script>
 
-</body>
+  </body>
 
 </html>
