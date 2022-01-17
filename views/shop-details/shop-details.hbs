@@ -67,7 +67,7 @@
                         data-toggle="modal" data-target="#notification">Thêm vào giỏ
                         hàng</button>
                     <ul>
-                        <li><b>Tình trạng</b> <span>Còn {{this.quantity}} sản phẩm</span></li>
+                        <li><b>Tình trạng</b> <span id="quantity">Còn {{this.quantity}} sản phẩm</span></li>
                         <li><b>Thời gian giao hàng</b> <span>1 ngày <samp>Nhận miễn phí ngay hôm nay</samp></span></li>
                     </ul>
                 </div>
@@ -122,9 +122,9 @@
                                                 {{/if}}
                                                 <input type="hidden" name="productId" value="{{this.idProduct}}">
                                                 {{#unless ../user}}
-                                                    <div class="alert alert-warning" role="alert">
-                                                        Bạn vui lòng đăng nhập để đánh giá sản phẩm
-                                                    </div>
+                                                <div class="alert alert-warning" role="alert">
+                                                    Bạn vui lòng đăng nhập để đánh giá sản phẩm
+                                                </div>
                                                 {{/unless}}
                                             </div>
                                         </div>
@@ -390,9 +390,15 @@
 </script>
 <script>
     function addShoppingCart(idProduct) {
-        let numProductOder = $('#numProductAddShopping').val();
+        let numProductOder = parseInt($('#numProductAddShopping').val());
+        let quantityProduct = $("#quantity").html();
+
+        quantityProduct = parseInt(quantityProduct.match(/\d+/)[0]);
+        console.log(quantityProduct);
         if (numProductOder <= 0) {
             $('#numProductWasAdded').html(`Vui lòng thêm sản phẩm lớn hơn 1`);
+        } else if (numProductOder > quantityProduct) {
+            $('#numProductWasAdded').html(`Quá sản phẩm hiện có! Mời kiểm tra lại!`);
         } else {
             $('#numProductWasAdded').html(`Đã thêm ${numProductOder} sản phẩm vào giỏ hàng`);
             numProductOder = parseInt(numProductOder);
@@ -403,8 +409,8 @@
                     idProduct,
                     numProductOder,
                 },
-                success: function (idProduct) {
-
+                success: function (result) {
+                    console.log(result);
                 }
             })
 
