@@ -9,3 +9,8 @@
   align-items: center;
   justify-content: flex-end;
 }
+
+#my-table {
+  overflow: hidden;
+  word-wrap: normal, break-word;
+}
