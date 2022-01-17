@@ -94,7 +94,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="notice">
                 Cập nhật thành công giỏ hàng
             </div>
             <div class="modal-footer">
@@ -182,11 +182,25 @@
     async function updateListProductOder() {
 
         let listProductOrder = await $("#formUpdateProductOrder").serializeArray();
-
+        let check = true;
         for (let i = 0; i < listProductOrder.length; i++) {
-            let quantity = $(`[name='num-${listProductOrder[i].name}']`).val();
+            let quantity = parseInt($(`[name='num-${listProductOrder[i].name}']`).val());
+            console.log(quantity);
+            if (quantity <= 0) {
+                check = false;
+                break;
+            }
+
             listProductOrder[i].value = quantity;
 
+        }
+        if (!check) {
+            console.log("hicc")
+            $("#notice").html(`Vui lòng kiểm tra lại số liệu!`);
+            return;
+
+        } else {
+            $("#notice").html(`Cập nhật thành công giỏ hàng!`);
         }
         $.ajax({
             url: `/api/shoppingCart/updateShoppingCart`,
@@ -199,7 +213,6 @@
                 await loadShoppingCart();
             }
         })
-
     }
 </script>
 {{/section}}

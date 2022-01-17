@@ -48,6 +48,11 @@ router.get(
   UserController.getCancelCheckOut
 );
 
+router.get(
+  "/myaccount/confirm-checkout/:idCheckOut",
+  UserController.getConfirmCheckOut
+);
+
 router.get("/", function (req, res) {
   res.redirect("/home");
 });

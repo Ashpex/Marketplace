@@ -8,7 +8,7 @@ const mailHost = "smtp.gmail.com";
 const mailPort = 587;
 
 const sendMail = (to, subject, htmlContent) => {
-  // Khởi tạo một thằng transporter object sử dụng chuẩn giao thức truyền tải SMTP với các thông tin cấu hình ở trên.
+  // Khởi tạo một transporter object sử dụng chuẩn giao thức truyền tải SMTP với các thông tin cấu hình ở trên.
   const transporter = nodeMailer.createTransport({
     host: mailHost,
     port: mailPort,
