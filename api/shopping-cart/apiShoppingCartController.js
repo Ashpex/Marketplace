@@ -9,6 +9,14 @@ module.exports = {
     const { idProduct, numProductOder } = req.body;
     //const newSession = new Session()
     const product = await Product.findOne({ idProduct: idProduct });
+    if (numProductOder > product.quantity) {
+      return res
+        .status(500)
+        .json({
+          result: "failed",
+          message: "error order quantity is greater than quantity available",
+        });
+    }
     if (!req.user) {
       const session = await Session.findOne({
         idUser: req.session.unauthId,
