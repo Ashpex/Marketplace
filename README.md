@@ -1,7 +1,7 @@
 # Marketplace
 University web project
 
-Demo URL: [https://ashstore.herokuapp.com]([https://ashstore.herokuapp.com)
+Demo URL: [https://ashstore.herokuapp.com](https://ashstore.herokuapp.com)
 
 ## Deployment
 
