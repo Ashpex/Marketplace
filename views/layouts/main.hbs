@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' type="image/png" href='/img/title/icon-shop.png' />
     <title>AshStore | Markeplace</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
@@ -64,13 +65,13 @@
             <ul>
                 <li class="active"><a href="/">Trang chủ</a></li>
                 <li><a href="/shop-grid">Mua sắm</a></li>
-                <li><a href="#">Trang</a>
+                {{!-- <li><a href="#">Trang</a>
                     <ul class="header__menu__dropdown" style="font-size: 12px;">
                         <li><a href="/shoping-cart">Giỏ hàng</a></li>
                         <li><a href="/checkout">Thanh toán</a></li>
                         <li><a href="/blog-details">Bài viết chi tiết</a></li>
                     </ul>
-                </li>
+                </li> --}}
                 <li><a href="/blog">Bài viết</a></li>
                 <li><a href="/contact">Liên hệ</a></li>
             </ul>
@@ -111,7 +112,7 @@
     {{{_sections.slider_script}}}
     {{{_sections.script}}}
 
-<!-- Messenger Plugin chat Code -->
+    <!-- Messenger Plugin chat Code -->
     <div id="fb-root"></div>
 
     <!-- Your Plugin chat code -->
@@ -119,27 +120,27 @@
     </div>
 
     <script>
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "100545349204744");
-      chatbox.setAttribute("attribution", "biz_inbox");
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "100545349204744");
+        chatbox.setAttribute("attribution", "biz_inbox");
     </script>
 
     <!-- Your SDK code -->
     <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v12.0'
-        });
-      };
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v12.0'
+            });
+        };
 
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     </script>
 </body>
 
