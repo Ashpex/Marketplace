@@ -36,7 +36,7 @@
                             <div class="col-lg-12">
                                 <div class="checkout__input">
                                     <p>Họ và tên <span>*</span></p>
-                                    <input type="text" value="{{user.name}}" readonly>
+                                    <input name="name" id="name-customer" type="text" value="{{user.name}}" readonly>
                                 </div>
                             </div>
 
@@ -54,7 +54,7 @@
                                 <div class="checkout__input">
                                     <p>Số điện thoại<span>* {{#if errorNumberPhone}}
                                             Bạn nhập sai số điện thoại {{/if}}</span></p>
-                                    <input type="tel" name="numberPhone">
+                                    <input id="phone" required type="tel" name="numberPhone">
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -82,11 +82,10 @@
                             </ul>
 
                             <div class="checkout__order__total">Tổng <span>{{format sumPrice}}</span></div>
-
+                            {{!-- data-toggle="modal" data-target="#notification" class="site-btn" --}}
                             <div>
-                                <button style="border-radius: 10px;" type="submit" onclick="postCheckout()"
-                                    data-toggle="modal" data-target="#notification" class="site-btn">Đặt
-                                    hàng</button>
+                                <button class="site-btn" style="border-radius: 10px;" onclick="postCheckout()"
+                                    >Đặt hàng</button>
                             </div>
 
                         </div>
@@ -97,6 +96,7 @@
         </div>
     </div>
 </section>
+
 <!-- Checkout Section End -->
 <button id="errorListProduct" style="display: none" data-toggle="modal" data-target="#notification"></button>
 <!-- Modal -->
@@ -120,11 +120,31 @@
         </div>
     </div>
 </div>
+
+<input type="hidden" id="admin-url" value="{{admin_url}}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/js/socket.io.js"></script>
+
 {{#section 'script'}}
 <script>
+    const admin_url = $('#admin-url').val() || 'http://localhost:3000';
+    const socket = io(admin_url); // port này là port của đích đến của socket.io
+    console.log(admin_url);
+    function sendMessage() {
+        let msg = $('#name-customer').val();
+        console.log(msg);
+        socket.emit("send-notification", msg);
+    } 
+
     function postCheckout() {
-        let data = $('#formCheckout').serializeArray();
-        console.log(data);
+        //let data = $('#formCheckout').serializeArray();
+        //console.log(data);
+        const phone = $('#phone').val();
+        if (phone) {
+            sendMessage();
+            //$("#formCheckout").submit();
+            //console.log(phone);
+        }        
     }
 </script>
 {{#if errorListProduct}}

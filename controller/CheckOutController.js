@@ -1,8 +1,10 @@
 const ShoppingCart = require("../models/ShoppingCart");
 const ProductOrder = require("../models/ProductOrder");
 const User = require("../models/User");
+const Notification = require("../models/Notification");
 const Product = require("../models/Product");
 const CheckOut = require("../models/CheckOut");
+const env = require("dotenv").config();
 
 module.exports = {
     getIndex: async (req, res) => {
@@ -32,6 +34,7 @@ module.exports = {
             sumPrice: sumPrice,
             errorNumberPhone: errorNumberPhone,
             errorListProduct: errorListProduct,
+            admin_url: process.env.ADMIN_URL,
         });
     },
     postCheckOut: async (req, res) => {
@@ -85,6 +88,13 @@ module.exports = {
                     console.log(error);
                 }
             }
+        });
+
+        await Notification.create({
+            title: "Đặt hàng",
+            content: `Khách hàng ${req.body.name} đã đặt hàng`,
+            time: new Date().toLocaleString(),
+            seen: false,
         });
 
         return res.redirect("/home");
